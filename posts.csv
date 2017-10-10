@@ -1,0 +1,3013 @@
+Id,PostTypeId,AcceptedAnswerId,ParentId,CreationDate,DeletionDate,Score,ViewCount,Body,OwnerUserId,OwnerDisplayName,LastEditorUserId,LastEditorDisplayName,LastEditDate,LastActivityDate,Title,Tags,AnswerCount,CommentCount,FavoriteCount,ClosedDate,CommunityOwnedDate
+"31133870","1","40365282","","2015-06-30 09:00:22","","3","758","<p>First of all I'm not actually sure if this belongs to CrossValidated or to StackOverflow. I'm sorry if I posted this Question on the wrong site.</p>
+
+<p>I'm comparing several datasets against an observational dataset using R. Each of these has about 10 million continuous float values (the length of the data vector is not exactly the same for each dataset).</p>
+
+<p>I usually calculate the <strong>Kolmogorov-Smirnov</strong> statistic using the <code>ks.test()</code> function from the standard <code>stats</code> package, but now I'm especially interested in the extreme values of the distributions. The KS, as far as I understand, pretty much hides those. The same happens for the <strong>Kullback-Leibler</strong> (feel free to correct me if I'm wrong).</p>
+
+<p>The <strong>Anderson-Darling</strong> test, on the other hand, is weighted to take into account the extremes of the distributions. However, I've not been able to find a simple implementation of the AD test that works on just two vectors as input (as <code>stats::ks.test()</code> does by just issuing <code>ks.test(obs.data, mod.data)</code>, where the two inputs are simple vectors), and neither I've been able to understand how to adapt my data to the functions I've tried.</p>
+
+<p>I've taken a look at the following functions:</p>
+
+<ul>
+<li><code>cvm.test()</code> from package <code>dgof</code>, with option <code>type=""A2""</code>: requires a distribution as second input, not a vector</li>
+<li><code>ad.test()</code> from package <code>truncgof</code>: requires a distribution as second input</li>
+<li><code>ad.test()</code> from package <code>goftest</code>: as above</li>
+<li><code>ad.test()</code> from package <code>ADGofTest</code>: as above</li>
+<li><code>ad.test()</code> from package <code>kSamples</code>: in this case it's not clear to me what the output represents, and how I could normalize it, since it seems it's heavily dependent on the number of samples</li>
+<li><code>ad.test()</code> from package <code>nortest</code>: only tests for normality</li>
+<li><code>ADbootstrap.test()</code> from package <code>homtest</code>: this seems quite different from a standard AD test</li>
+</ul>
+
+<p>None of the above, in short, can be used as simply as the standard <code>ks.test()</code> function or as the Kullbach-Leibler function <code>KLdiv</code> from package <code>flexmix</code> (which accepts a matrix of density values).</p>
+
+<p>How can I calculate the AD statistic between two distributions provided simply as two vectors of continuous data, using R?</p>
+","4124334","","4124334","","2015-06-30 15:04:02","2016-11-01 17:22:46","Computing Anderson-Darling test statistics for continuous distributions in R","<r><comparison><distribution>","1","0","3","",""
+"31133871","2","","15711499","2015-06-30 09:00:22","","2","","<p>since the HttpClient has been depreciated, you may try the following code with Asynctask (also note that we need to encode the address into URL) : </p>
+
+<pre><code>public class GeoCoding extends AsyncTask&lt;Void, Void, Void&gt; {
+    private String address;
+    private static final String TAG = GeoCoding.class.getSimpleName();
+    JSONObject jsonObj;
+    String URL;
+    private String Address1 = """", Address2 = """", City = """", State = """", Country = """", County = """", PIN = """", Area="""";
+    private  double latitude, longitude;
+    HttpURLConnection connection;
+    BufferedReader br;
+    StringBuilder sb ;
+
+    public GeoCoding(String address){
+        this.address = address;
+    }
+
+    public String getArea(){
+        return Area;
+    }
+
+    public void getAddress() {
+        Address1 = """";
+        Address2 = """";
+        City = """";
+        State = """";
+        Country = """";
+        County = """";
+        PIN = """";
+        Area ="""";
+
+        try {
+
+            String Status = jsonObj.getString(""status"");
+            if (Status.equalsIgnoreCase(""OK"")) {
+                JSONArray Results = jsonObj.getJSONArray(""results"");
+                JSONObject zero = Results.getJSONObject(0);
+                JSONArray address_components = zero.getJSONArray(""address_components"");
+
+                for (int i = 0; i &lt; address_components.length(); i++) {
+                    JSONObject zero2 = address_components.getJSONObject(i);
+                    String long_name = zero2.getString(""long_name"");
+                    JSONArray mtypes = zero2.getJSONArray(""types"");
+                    String Type = mtypes.getString(0);
+
+                    if (! TextUtils.isEmpty(long_name) || !long_name.equals(null) || long_name.length() &gt; 0 || !long_name.equals("""")) {
+                        if (Type.equalsIgnoreCase(""street_number"")) {
+                            Address1 = long_name + "" "";
+                        } else if (Type.equalsIgnoreCase(""route"")) {
+                            Address1 = Address1 + long_name;
+                        } else if (Type.equalsIgnoreCase(""sublocality"")) {
+                            Address2 = long_name;
+                        } else if (Type.equalsIgnoreCase(""locality"")) {
+                            City = long_name;
+                        } else if (Type.equalsIgnoreCase(""administrative_area_level_2"")) {
+                            County = long_name;
+                        } else if (Type.equalsIgnoreCase(""administrative_area_level_1"")) {
+                            State = long_name;
+                        } else if (Type.equalsIgnoreCase(""country"")) {
+                            Country = long_name;
+                        } else if (Type.equalsIgnoreCase(""postal_code"")) {
+                            PIN = long_name;
+                        }else if( Type.equalsIgnoreCase(""neighborhood"")){
+                            Area = long_name;
+                        }
+                    }
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void getGeoPoint(){
+        try{
+             longitude = ((JSONArray)jsonObj.get(""results"")).getJSONObject(0)
+                    .getJSONObject(""geometry"").getJSONObject(""location"")
+                    .getDouble(""lng"");
+            latitude = ((JSONArray)jsonObj.get(""results"")).getJSONObject(0)
+                    .getJSONObject(""geometry"").getJSONObject(""location"")
+                    .getDouble(""lat"");
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+    @Override
+    protected Void doInBackground(Void... params)  {
+        try {
+            StringBuilder urlStringBuilder = new StringBuilder(""http://maps.google.com/maps/api/geocode/json"");
+            urlStringBuilder.append(""?address="" + URLEncoder.encode(address, ""utf8""));
+            urlStringBuilder.append(""&amp;sensor=false"");
+            URL = urlStringBuilder.toString();
+            Log.d(TAG, ""URL: "" + URL);
+
+            URL url = new URL(URL);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod(""GET"");
+            connection.setDoInput(true);
+            connection.connect();
+            br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb = sb.append(line + ""\n"");
+            }
+        }catch (Exception e){e.printStackTrace(); }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Void aVoid) {
+        try {
+            Log.d(TAG, ""response code: "" + connection.getResponseCode());
+            jsonObj = new JSONObject(sb.toString());
+            Log.d(TAG, ""JSON obj: "" + jsonObj);
+            getAddress();
+            Log.d(TAG, ""area is: "" + getArea());
+            getGeoPoint();
+            Log.d(""latitude"", """" + latitude);
+            Log.d(""longitude"", """" + longitude);
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        super.onPostExecute(aVoid);
+    }
+}
+</code></pre>
+","5064633","","","","","2015-06-30 09:00:22","","","","0","","",""
+"31133872","1","31133998","","2015-06-30 09:00:25","","1","28","<p>I use XML for configurations but sometimes I want to test new ones and use comments to leave them separated from the rest like this:</p>
+
+<pre><code>&lt;!-- Begin testing block comments --&gt;
+&lt;test1&gt;
+    something here
+&lt;/test1&gt;
+
+&lt;test2&gt;
+    something else
+&lt;/test&gt;
+&lt;!-- End testing block comments --&gt;
+</code></pre>
+
+<p>So recently I came across an error after commenting the whole block removin the first closing comment, assuming that it works as C block comments where only the first comment opening is regarded until a closing one is found (i.e. <code>/* /* */</code>).
+But when I did the following:</p>
+
+<pre><code>&lt;!-- Begin testing block comments &gt;
+...
+&lt;!-- End testing block comments --&gt;
+</code></pre>
+
+<p>I still came across configuration errors. Will this mis-comment my code or is it suppose to work like this? Because if it is I suppose something else might have happened...</p>
+","3555155","","","","","2015-06-30 09:07:29","XML: Use comments to manipulate code?","<xml><comments><xml-comments>","1","0","","",""
+"31133873","1","31340092","","2015-06-30 09:00:37","","1","426","<p>I am using the <a href=""https://github.com/bluetiger9/SmtpClient-for-Qt"" rel=""nofollow"">SMTP Client</a> project to create a library file (.dll) on Windows. Everything works fine and e-mails are sent successfully.</p>
+
+<p>I want to port my Qt project to Android and since Android is a different architecture I need to build the library using a Android armv7 toolkit.</p>
+
+<p>I try this, but I get error:</p>
+
+<blockquote>
+  <p>Internal Error: Unknown Android deployment JSON file location.
+  Error while building/deploying project SMTPEmail (kit: Android for armeabi-v7a (GCC 4.9, Qt 5.4.2))
+  When executing step ""Build Android APK""</p>
+</blockquote>
+
+<p>I suspect there is something I have to add/remove from the project file. I see there is a ""win32:CONFIG += dll"", but nothing similar for other platforms.</p>
+
+<p>The .pro files looks like this:</p>
+
+<p><div class=""snippet"" data-lang=""js"" data-hide=""false"">
+<div class=""snippet-code"">
+<pre class=""snippet-code-html lang-html prettyprint-override""><code>#-------------------------------------------------
+#
+# Project created by QtCreator 2011-08-11T20:59:25
+#
+#-------------------------------------------------
+
+QT       += core network
+
+TARGET = SMTPEmail
+
+# Build as an application
+#TEMPLATE = app
+
+# Build as a library
+TEMPLATE = lib
+DEFINES += SMTP_BUILD
+win32:CONFIG += dll
+
+QMAKE_CXXFLAGS += -fPIC
+
+SOURCES += \
+    src/emailaddress.cpp \
+    src/mimeattachment.cpp \
+    src/mimefile.cpp \
+    src/mimehtml.cpp \
+    src/mimeinlinefile.cpp \
+    src/mimemessage.cpp \
+    src/mimepart.cpp \
+    src/mimetext.cpp \
+    src/smtpclient.cpp \
+    src/quotedprintable.cpp \
+    src/mimemultipart.cpp \
+    src/mimecontentformatter.cpp \
+
+HEADERS  += \
+    src/emailaddress.h \
+    src/mimeattachment.h \
+    src/mimefile.h \
+    src/mimehtml.h \
+    src/mimeinlinefile.h \
+    src/mimemessage.h \
+    src/mimepart.h \
+    src/mimetext.h \
+    src/smtpclient.h \
+    src/SmtpMime \
+    src/quotedprintable.h \
+    src/mimemultipart.h \
+    src/mimecontentformatter.h \
+    src/smtpexports.h
+
+OTHER_FILES += \
+    LICENSE \
+    README.md
+
+FORMS +=</code></pre>
+</div>
+</div>
+</p>
+","1840438","","1840438","","2015-06-30 13:15:12","2016-02-07 23:04:55","Building SMTP client for Qt for Android target","<android><c++><qt><email><shared-libraries>","3","4","","",""
+"31133874","2","","16454499","2015-06-30 09:00:39","","0","","<p>i have the same problem with you, but may be this can be solve yours.</p>
+
+<p>Click <a href=""http://solvedstack.com/questions/running-google-maps-v2-on-the-android-emulator"" rel=""nofollow"">solvedstack.com/questions/running-google-maps-v2-on-the-android-emulator</a></p>
+
+<p>I have successfully run our app, which requires Google Maps API 2, on an AndroVM virtual machine.</p>
+
+<p>AndroVM does not come with Google Maps or Google Play installed, but provides a modified copy of the Cyanogen Gapps archive, which is a set of the proprietary Google apps installed on most Android devices.</p>
+
+<p>The instructions, copied from the AndroVM FAQ:</p>
+
+<p>How can I install Google Apps (including the Market/Play app) ?</p>
+
+<p>Download Google Apps : gapps-jb-20121011-androvm.tgz [basically the /system directory from the Cyanogen gapps archive without the GoogleTTS app which crashes on AndroVM]
+Untar the gapps…tgz file on your host – you’ll have a system directory created
+Get the management IP address of your AndroVM (“AndroVM Configuration” tool) and do “adb connect x.y.z.t”
+do “adb root”
+reconnect with “adn connect x.y.z.t”
+do “adb remount”
+do “adb push system/ /system/”
+Your VM will reboot and you should have google apps including Market/Play.</p>
+
+<p>You won’t have some Google Apps, like Maps, but they can be downloaded from the Market/Play.
+So follow those instructions, then just install Google Maps using Google Play!</p>
+
+<p>Some great side effects of using a VM rather than the emulator:</p>
+
+<p>Vastly superior general performance
+OpenGL acceleration
+Google Play support
+The only bump in the road so far has been lack of multi-touch gestures, which is a bummer for a mapping app! I plan to work around this with a hidden UI mechanism, so not such a huge problem.</p>
+","5059559","","","","","2015-06-30 09:00:39","","","","0","","",""
+"31133875","1","31134112","","2015-06-30 09:00:45","","2","101","<p>To simplify some processes I document a large series of terminal commands so I can copy and paste them when needed.</p>
+
+<p>I'm encountering some strange behaviour however, as demonstrated here:</p>
+
+<pre><code>ssh $USER@$SERVER 'rm ~/backup.tar'
+
+tar -xvzf backup.tar
+cd backup
+</code></pre>
+
+<p>When I copy all of that and paste it into a terminal, the SSH command is executed, resulting in a pause as it runs. Once it finishes, the <code>tar</code> and <code>cd</code> commands are not executed - as if they were never copied.</p>
+
+<p>I surmise this is because they're somehow being ""typed"" (I know that's not the right word) while the SSH command is still executing, and are hence consumed by that command - doing nothing there.</p>
+
+<p>Sure, that makes sense, but it gets weird here:</p>
+
+<pre><code>ssh $USER@$SERVER 'rm ~/backup.tar' &lt;&lt;EOF
+EOF
+
+tar -xvzf backup.tar
+cd backup
+</code></pre>
+
+<p>This seems like the same thing but with some random, purposeless heredoc. However when I've got it there, the <code>tar</code> and <code>cd</code> commands are successfully pasted and executed after the SSH command completes.</p>
+
+<p><strong>And so my question:</strong></p>
+
+<p>What difference did the heredoc make that caused <code>tar</code> and <code>cd</code> to be pasted as I would've originally expected?</p>
+
+<p>Is there a better way than randomly slugging on a heredoc to achieve the same result?</p>
+","1406230","","1406230","","2015-06-30 09:08:06","2015-06-30 09:12:26","Strange behaviour when copy/pasting bash commands with heredocs into terminal","<bash><heredoc>","3","0","","",""
+"31133877","2","","31133416","2015-06-30 09:00:49","","0","","<p>I have modified your code a little bit, and able to achieve what you need. I am not sure of the performance though.</p>
+
+<p><strong>Html</strong></p>
+
+<pre><code>&lt;input type=""text"" id=""inputText"" /&gt;
+&lt;div id=""sampleText""&gt;
+   John Resig George Martin Malcom John Sinclair J. Ohn Sample text
+&lt;/div&gt;
+</code></pre>
+
+<p><strong>JS</strong></p>
+
+<pre><code>$(""input"").keyup(function () {
+
+   var mysearchword = $(this).val();
+   var word = mysearchword;
+   var textInDiv = $(""#sampleText"").text();
+   if (textInDiv.indexOf(word) &gt; 0) {
+      var re = new RegExp(word, ""g"");
+      $(""#sampleText"").html(textInDiv.replace(re, '&lt;span&gt;' + word +'&lt;/span&gt;'));
+   };
+});
+</code></pre>
+","639258","","","","","2015-06-30 09:00:49","","","","0","","",""
+"31133878","1","31134265","","2015-06-30 09:00:49","","0","32","<p>I am writing a C# forms application, that deals with a html document. I have a List of objects, where each object has an XPath for a html node.</p>
+
+<p>When adding a html node, the XPath for these above objects changes.</p>
+
+<p>My question is this: How is the best way to update all XPath values, after making an addition to a document? I am currently using Html Agility Pack.</p>
+
+<p><strong>EDIT</strong></p>
+
+<p>I have tried the following in code, but am not sure if Html Agility Pack has this feature, or I may be writing my code incorrectly:</p>
+
+<ol>
+<li>Before making any changes to the HtmlDocument, create a HtmlNode
+object for each XPath that I have</li>
+<li>Insert the new HtmlNode</li>
+</ol>
+
+<p>I am creating the HtmlNodes with the following code:</p>
+
+<pre><code>HtmlNode htmlNode1 = testingHtmlDocument.DocumentNode.SelectSingleNode(""/html[1]/body[1]/div[1]"");
+</code></pre>
+
+<ol>
+<li>Should the XPath values in each of the HtmlNodes be updated after an
+addition has been made to the HtmlDocument? Does XPath work this
+way?</li>
+<li>Other than XPath, what is the best way to identify a HtmlNode,
+without adding any additional data to a HtmlNode?</li>
+</ol>
+
+<p>Thanks.</p>
+","3736648","","3736648","","2015-06-30 09:51:33","2015-06-30 09:51:33","How to update XPaths when adding a node","<c#><xpath><html-agility-pack>","1","0","","",""
+"31133879","2","","31132988","2015-06-30 09:00:50","","2","","<p>Create a <a href=""https://docs.djangoproject.com/en/1.8/ref/contrib/sitemaps/#sitemap-for-static-views"" rel=""nofollow"">sitemap for static views</a>:</p>
+
+<pre><code>class StaticViewSitemap(sitemaps.Sitemap):
+    priority = 0.5
+    changefreq = 'daily'
+
+    def items(self):
+        return ['home']
+
+    def location(self, item):
+        return reverse(item)
+</code></pre>
+
+<p>This assumes you have url pattern for the homepage with name ""home""</p>
+
+<pre><code>url(r'^$', views.homepage, name=""home""),
+</code></pre>
+
+<p>Then add the <code>StaticViewSitemap</code> to the <code>sitemaps</code> dict in your urls.py.</p>
+
+<pre><code>sitemaps = {
+    'blog': BlogSitemap,
+    'static': StaticViewSiteMap,
+}
+</code></pre>
+","113962","","113962","","2015-06-30 09:24:20","2015-06-30 09:24:20","","","","1","","",""
+"31133880","2","","31133546","2015-06-30 09:00:51","","0","","<p>you can extend session expire time by adjusting <code>php.ini</code> file as follows</p>
+
+<pre><code>session.gc_maxlifetime=86400 //1 day
+session.gc_divisor=5000
+session.gc_probability=1
+</code></pre>
+
+<p>gc_divisor and gc_probability are responsible for cleaning expired session files, by above config session will valid for 1 day </p>
+","1844933","","1844933","","2015-06-30 09:10:13","2015-06-30 09:10:13","","","","0","","",""
+"31133881","2","","31133557","2015-06-30 09:00:55","","0","","<p>You need to change your _settingsManager to have a type of ISettingsManager instead of SettingsManager.</p>
+
+<p>(You're binding ISettingsManager to SettingsManager. This means when Ninject sees a dependency on ISettingsManager it will inject a SettingsManager. If something is directly declared as SettingsManager it won't do anything)</p>
+","1136989","","","","","2015-06-30 09:00:55","","","","2","","",""
+"31133882","2","","31132813","2015-06-30 09:00:55","","1","","<p>I am not much familiar with <code>d3.nest</code>. But I think you can get your results by using JavaScript Array map function. Try this code.</p>
+
+<p><div class=""snippet"" data-lang=""js"" data-hide=""false"">
+<div class=""snippet-code"">
+<pre class=""snippet-code-js lang-js prettyprint-override""><code>var data=[{
+  ""Month"": ""Jan"",
+  ""typeA"": [
+     {
+        ""A"": 24000,
+        ""B"": 24000,
+        ""C"": 24000
+     }],
+  ""typeB"": [
+     {
+        ""A"": 20000,
+        ""B"": 14000,
+        ""C"": 10000
+     }],
+  ""typeC"": [
+     {
+        ""A"": 34000,
+        ""B"": 44000,
+        ""C"": 54000
+     }]
+     },
+      {
+  ""Month"": ""Feb"",
+  ""typeA"": [
+     {
+        ""A"": 84000,
+        ""B"": 64000,
+        ""C"": 14000
+     }],
+  ""typeB"": [
+     {
+        ""A"": 20000,
+        ""B"": 34000,
+        ""C"": 10000
+     }],
+  ""typeC"": [
+     {
+        ""A"": 30000,
+        ""B"": 40000,
+        ""C"": 50000
+     }]
+    }
+  ];
+
+var results = data.map(function(d){ 
+  return { 
+    Month: d.Month ,
+    typeA: d3.sum(d3.values(d.typeA[0])),
+    typeB: d3.sum(d3.values(d.typeB[0])),
+    typeC: d3.sum(d3.values(d.typeC[0])) 
+  } 
+});
+
+alert(JSON.stringify(results));</code></pre>
+<pre class=""snippet-code-html lang-html prettyprint-override""><code>&lt;script src=""https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js""&gt;&lt;/script&gt;</code></pre>
+</div>
+</div>
+</p>
+","2143690","","","","","2015-06-30 09:00:55","","","","0","","",""
+"31133883","1","","","2015-06-30 09:01:03","","1","646","<p>I must to enable rack-mini-profiler for dev and production. In ApplicationController I have:</p>
+
+<pre><code>before_filter :miniprofiler
+
+def miniprofiler
+  Rack::MiniProfiler.authorize_request #if current_user.admin?
+end
+</code></pre>
+
+<p>In config/initializers/rack_profiler.rb</p>
+
+<pre><code>if Rails.env == 'development'
+  require 'rack-mini-profiler'
+
+  Rack::MiniProfilerRails.initialize!(Rails.application)
+end
+</code></pre>
+
+<p>In dev environment all works fine, but when i push to staging on Heroku, server falls with the</p>
+
+<pre><code>NameError (uninitialized constant Rack::MiniProfiler)
+</code></pre>
+
+<p>in this line </p>
+
+<pre><code>Rack::MiniProfiler.authorize_request #if current_user.admin?
+</code></pre>
+
+<p>I tried add</p>
+
+<pre><code>reqire 'rack-mini-profiler' to ApplicationController
+</code></pre>
+
+<p>but then I cann't even push it to staging with</p>
+
+<pre><code>Push rejected, failed to compile Multipack app
+</code></pre>
+
+<p>What i am missing? </p>
+","4051543","","4051543","","2015-06-30 09:12:45","2017-01-09 10:06:01","uninitialized constant Rack::MiniProfiler on staging","<ruby-on-rails><staging><rack-mini-profiler>","2","0","","",""
+"31133884","2","","31131289","2015-06-30 09:01:04","","1","","<p>To update your test database try</p>
+
+<pre><code>rake db:test:prepare 
+</code></pre>
+","5061362","","2237785","","2015-07-01 03:10:03","2015-07-01 03:10:03","","","","1","","",""
+"31133886","2","","31133504","2015-06-30 09:01:09","","1","","<p>When I change the example you provided to a csv:</p>
+
+<pre><code>order_id,name,address
+5432548543,Manish,Dummy Address
+</code></pre>
+
+<p>And just iterate over the rows, printing them out:</p>
+
+<pre><code>with open('./data.txt') as f:
+    data = csv.DictReader(f)
+    for row in data:
+            print(l)
+</code></pre>
+
+<p>I get:</p>
+
+<pre><code>{'order_id': '5432548543', 'name': 'Manish', 'address': 'Dummy Address'}
+</code></pre>
+
+<p>Which suggests the issue isn't in the csv parsing step - but you should try the same thing on your data set to double check.</p>
+
+<p>Then the question is - what is your postgres driver doing that could be causing the issue? Are you using psycopg2? Does it do some automatic casting somewhere?</p>
+
+<p>EDIT so the problem is the src data. Sometimes you have ints in scientific notation. You need to scrub the data before passing it to <code>executemany</code>:</p>
+
+<pre><code>data = csv.DictReader(f)
+
+clean_data = []
+for d in data:
+    clean_data.append(d)
+    try:
+        d['Order Id'] = str(int(float(d['Order Id'])))
+    except ValueError:
+        pass
+
+cur.executemany(""""""Insert into temp_unicom values (%(Order Id)s, %(Name)s, %(Address)s)"""""", clean_data)
+</code></pre>
+","171450","","171450","","2015-06-30 09:45:24","2015-06-30 09:45:24","","","","18","","",""
+"31133887","1","","","2015-06-30 09:01:11","","1","31","<p>What do you think about this block of code? I wan't to execute all queries from array. </p>
+
+<pre><code>foreach($sql_array as $sql) {
+     try {
+
+        $this-&gt;_db-&gt;transactionStart();
+        $this-&gt;_db-&gt;setQuery((string)$sql)-&gt;execute();
+        $this-&gt;_db-&gt;transactionCommit();
+
+     } catch (Exception $e) {
+        $this-&gt;_db-&gt;transactionRollback();
+        JErrorPage::render($e);
+     }
+}
+</code></pre>
+
+<p>Or should I move <code>$this-&gt;_db-&gt;transactionStart();</code> before <code>foreach</code> statement?</p>
+","889349","","889349","","2015-06-30 09:12:37","2015-06-30 09:12:37","Joomla sql transaction in foreach","<php><arrays><joomla><foreach>","0","1","","",""
+"31133888","1","","","2015-06-30 09:01:15","","-5","39","<p>I want to replace switch statements here with proper code. I need suggestion of doing this in an improved manner.</p>
+
+<pre><code>switch(true) {
+    case ($value === 'test1'):
+    $testArray['class'] = 'incomplete';
+    return $this-&gt;icon(
+        'test_0.png',
+        $testArray
+    );
+    case ($value === 'test2'):
+    $testArray['class'] = 'progress';
+    return $this-&gt;icon(
+        'test_1.png',
+        $testArray
+    );
+    case ($value === 'test3'):
+    $testArray['class'] = 'complete';
+    return $this-&gt;icon(
+        'test_3.png',
+        $testArray
+    );
+}
+</code></pre>
+","5064303","","","","","2015-06-30 09:15:59","How this code can be done in an improved manner","<php><switch-statement><conditional-statements>","2","3","","2015-06-30 17:59:51",""
+"31133889","2","","31133546","2015-06-30 09:01:15","","0","","<p>Try this :</p>
+
+<pre><code>// Time in secondes before the session expires
+ini_set('session.gc_maxlifetime', 3600);
+
+// Time in secondes before the ID's session in the cookie expires
+session_set_cookie_params(3600);
+
+// Start session
+session_start();
+</code></pre>
+
+<p>If think this gonna work. Tell me if it work !</p>
+
+<p>(Sorry for my bad english :D)</p>
+","4757507","","","","","2015-06-30 09:01:15","","","","0","","",""
+"31133890","2","","31130753","2015-06-30 09:01:18","","4","","<ul>
+<li><p>If you directly run your testng class, it will first call dataprovider which cant get groups information as groups are not available. But instead if you call this class via testng.xml, it will have groups info available with ITestContext.</p></li>
+<li><p>You need to call this class(class name is say 'ParameterByITestContextInDataprovider') through TestNG xml.</p></li>
+</ul>
+
+<p>Below is sample xml:-</p>
+
+<pre><code>&lt;!DOCTYPE suite SYSTEM ""http://beust.com/testng/testng-1.0.dtd"" &gt;
+&lt;suite name=""test-parameter""&gt;
+
+  &lt;test name=""example1""&gt;
+
+    &lt;groups&gt;
+        &lt;run&gt;
+            &lt;include name=""A"" /&gt;
+        &lt;/run&gt;
+    &lt;/groups&gt;
+
+    &lt;classes&gt;
+       &lt;class
+        name=""com.package123.ParameterByITestContextInDataprovider"" /&gt;
+    &lt;/classes&gt;
+
+  &lt;/test&gt;
+
+
+  &lt;test name=""example2""&gt;
+
+    &lt;groups&gt;
+        &lt;run&gt;
+            &lt;include name=""B"" /&gt;
+        &lt;/run&gt;
+    &lt;/groups&gt;
+
+    &lt;classes&gt;
+       &lt;class
+        name=""com.package123.ParameterByITestContextInDataprovider"" /&gt;
+    &lt;/classes&gt;
+
+  &lt;/test&gt;
+
+&lt;/suite&gt;
+</code></pre>
+","4234503","","","","","2015-06-30 09:01:18","","","","7","","",""
+"31133892","2","","25104173","2015-06-30 09:01:22","","1","","<p>I know how to do it using <code>R</code>.
+You have to install a package <code>Rfacebook</code>. Then use function :</p>
+
+<pre><code>x&lt;-getPage(page=""pagename"",token = access_token, n = no. of posts)
+</code></pre>
+
+<p>This will give all the posts and post ids.
+Now  use function</p>
+
+<pre><code>y&lt;-getPost(post = x$id[1], n = number of comments and likes, token = access_token)
+</code></pre>
+
+<p>You can use a loop to get all the comments.</p>
+","4899039","","4140597","","2015-06-30 10:23:41","2015-06-30 10:23:41","","","","0","","",""
+"31133894","2","","31133661","2015-06-30 09:01:26","","3","","<p>It seems you want the cartesian product:</p>
+
+<pre><code>SELECT a.Number, b.Number 
+FROM [Table] a, [Table] b
+</code></pre>
+
+<p>Or, another way to write:</p>
+
+<pre><code>SELECT a.Number, b.Number 
+FROM [Table] a CROSS JOIN [Table] b
+</code></pre>
+","2504785","","","","","2015-06-30 09:01:26","","","","2","","",""
+"31133895","1","","","2015-06-30 09:01:30","","4","1414","<p>I was trying a custom activity as like Whatsapp Group Profile page, where I need to place , 1 Image in left and two text in a layout to the right of image and two icons in the right. The collapsing layout which is currently available is with Imageview only. I am trying similar to the below orange screenshot where I make my layout in place of Imagview to collapse into the tool bar and when scroll on top the images textview and icons gets transferred from below layout to toolbar in the top. Tried all possible ways, Imageview is there but in layout I couldnt achieve.<img src=""https://i.stack.imgur.com/xG698.jpg"" alt=""enter image description here""></p>
+","1113192","","","","","2015-06-30 09:01:30","Collapsing layout in a tool bar with Images and text and icons in Android","<android><parallax><whatsapp><user-profile><collapsingtoolbarlayout>","0","4","","",""
+"31133896","2","","31133122","2015-06-30 09:01:32","","0","","<p>The problem is <code>min.js</code>
+You can't wrap a <code>min</code> version of scripts in bundle of MVC.</p>
+
+<p>Because its already minified.</p>
+
+<p>Try instead-</p>
+
+<pre><code>bundles.Add(new ScriptBundle(""~/bundles/lightbox"").Include(
+                    ""~/Scripts/lightbox-2.6.js""));
+</code></pre>
+","1982631","","","","","2015-06-30 09:01:32","","","","5","","",""
+"31133897","2","","31133780","2015-06-30 09:01:34","","0","","<p>You have to call the <code>showDialog()</code> method (or whatever the corresponding DirectoryChooser method is called) to show the dialog to the user. If you're referring to the DirectoryChooser class in the JavaFX library you can call <code>showDialog(Window owner)</code> to make the dialog block IO to the owner window as well.</p>
+","2622234","","","","","2015-06-30 09:01:34","","","","0","","",""
+"31133898","2","","31131520","2015-06-30 09:01:39","","0","","<p>If a sender attempts to send data at a higher rate than the network can support, initially the data will be buffered - in the network card, operating systems buffers, and/or buffers in the sending process.  Eventually the buffers will fill, and the sending thread or process will be blocked until buffers are emptied.</p>
+
+<p>If buffers on routers or the receiving system are filled, packets are dropped.</p>
+
+<p>Maximum Ethernet packet sizes have been about 1500 bytes until Gigabit Ethernet came along.  With higher speeds, <em>jumbo frames</em> were implemented which increased packet sizes to about 9k bytes.</p>
+","1638010","","","","","2015-06-30 09:01:39","","","","1","","",""
+"31133899","2","","31067225","2015-06-30 09:01:40","","0","","<p>Use <code>substring-before</code> to remove those characters.</p>
+","3905397","","2237785","","2015-07-03 19:08:53","2015-07-03 19:08:53","","","","0","","",""
+"31133900","1","","","2015-06-30 09:01:40","","0","69","<p>I'm trying to write a function that will extract and summarize all integers, no matter how many levels deep (I'm talking multidimensional arrays here) from a given array. Here's what I've got so far:</p>
+
+<pre><code>function addTheNumbers (someArray) {
+    var onlyNumbers = someArray.filter(function(a){ return typeof(a)=='number'; });
+    for (i = 0; i &amp;lt; onlyNumbers.length; i++) {
+        // idk
+    }
+}
+var sampleArray = ['word',['a','b','c'],12314,'longer phrase',5,[123,123,2],10,3874,32];
+addTheNumbers(sampleArray);
+</code></pre>
+
+<p>I have two concerns:</p>
+
+<p><strong>1)</strong> I feel like the filter I have in place will only extract the numbers that are standing alone within the given array and not ALL numbers in ALL arrays… not sure how to fix it.</p>
+
+<p><strong>2)</strong> I know that once I've got all the numbers extracted, they'll be stored in an object/array, and I'll have to iterate through it somehow to add them all together, but… once again I have no idea how to proceed.</p>
+
+<p><a href=""http://jsfiddle.net/w7equtrL/"" rel=""nofollow"">JSFiddle</a> to make things easier.</p>
+","5064654","","","","","2015-06-30 21:51:31","Extracting and Adding Numbers From Array(s)","<javascript><arrays><function><numbers>","4","3","","",""
+"31133901","1","31188452","","2015-06-30 09:01:41","","0","115","<p>I am working with roles in mondrian schema and i would like to know if possible to make intersection of two declared roles.</p>
+
+<p>I created these roles:</p>
+
+<p>For product manager that has restriction on specific types of products</p>
+
+<pre><code>&lt;Role name=""product_manager""&gt;
+    &lt;SchemaGrant access=""none""&gt;
+      &lt;CubeGrant cube=""product"" access=""all""&gt;
+          &lt;HierarchyGrant hierarchy=""product_group"" rollupPolicy=""partial"" access=""custom""&gt;
+           &lt;MemberGrant member=""[product_group].[Wardrobes]"" access=""all""&gt;
+           &lt;/MemberGrant&gt;
+          &lt;/HierarchyGrant&gt;
+        &lt;/CubeGrant&gt;
+    &lt;/SchemaGrant&gt;
+  &lt;/Role&gt;
+</code></pre>
+
+<p>And financial manager that has restriction on specific country</p>
+
+<pre><code>&lt;Role name=""financial_manager""&gt;
+        &lt;SchemaGrant access=""none""&gt;
+          &lt;CubeGrant cube=""country"" access=""all""&gt;
+              &lt;HierarchyGrant hierarchy=""country"" rollupPolicy=""partial"" access=""custom""&gt;
+               &lt;MemberGrant member=""[country].[Germany]"" access=""all""&gt;
+               &lt;/MemberGrant&gt;
+              &lt;/HierarchyGrant&gt;
+            &lt;/CubeGrant&gt;
+        &lt;/SchemaGrant&gt;
+      &lt;/Role&gt;
+</code></pre>
+
+<p>My required result should be intersection of these two roles, i found that exist element <strong>UNION</strong>, but i found that it returns sum of both so the user can see all from both, it isn't my required solution.</p>
+
+<pre><code>&lt;Role name=""product_and_financial_manager_for_wardrobes_and_germany_resort""&gt;
+    &lt;Union&gt;
+        &lt;RoleUsage roleName=""product_manager"" /&gt;
+        &lt;RoleUsage roleName=""financial_manager"" /&gt;
+    &lt;/Union&gt;
+  &lt;/Role&gt;
+</code></pre>
+
+<p>Something like this:</p>
+
+<pre><code> &lt;Role name=""product_and_financial_manager_for_wardrobes_and_germany_resort""&gt;
+        &lt;Intersection&gt;
+            &lt;RoleUsage roleName=""product_manager"" /&gt;
+            &lt;RoleUsage roleName=""financial_manager"" /&gt;
+        &lt;/Intersection&gt;
+      &lt;/Role&gt;
+</code></pre>
+
+<p>This is example on data:</p>
+
+<p><strong>fact_product</strong></p>
+
+<pre><code>---------------------------------------------------------------------------
+|  id_fact_product   |  price    | id_dim_product_group  | id_dim_country
+---------------------------------------------------------------------------
+| 1                  |   100     |   1                   |    1
+---------------------------------------------------------------------------
+| 2                  |    150    |   1                   |    2
+---------------------------------------------------------------------------
+| 3                  |    120    |   2                   |    2
+---------------------------------------------------------------------------
+| 4                  |    230    |   1                   |    2
+---------------------------------------------------------------------------
+</code></pre>
+
+<p><strong>dim_product_group</strong></p>
+
+<pre><code>----------------------------------------------
+| id_dim_product_group  |  section
+----------------------------------------------
+|  1                    |  Wardrobes
+----------------------------------------------
+|  2                    |  Tables
+----------------------------------------------
+</code></pre>
+
+<p><strong>dim_country</strong></p>
+
+<pre><code>----------------------------------------------
+| id_dim_country        |  country
+----------------------------------------------
+|  1                    |  Italy
+----------------------------------------------
+|  2                    |  Germany
+----------------------------------------------
+</code></pre>
+
+<p>The result for Role <strong>product_and_financial_manager_for_wardrobes_and_germany_resort</strong> should be see data only in this range</p>
+
+<pre><code> -----------------------------------------------------------------------------
+    |  id_fact_product   |  price    | id_dim_product_group  | id_dim_country
+    ---------------------------------------------------------------------------
+    | 2                  |    150    |   1                   |    2
+    ---------------------------------------------------------------------------
+    | 4                  |    230    |   1                   |    2
+    ---------------------------------------------------------------------------
+----------------------------------------
+    |  section           |  country  | 
+    -----------------------------------
+    |  Wardrobes         |  Germany  | 
+    -----------------------------------
+    | Wardrobes          |  Germany  | 
+    -----------------------------------
+</code></pre>
+
+<p>Thanks for you help</p>
+","2749328","","","","","2015-07-02 15:14:44","Pentaho Role Intersection","<pentaho><roles><mondrian>","1","0","","",""
+"31133903","1","31143313","","2015-06-30 09:01:44","","8","8747","<p>I am trying to remove the background of some images, tweaking some values and using some methods like <code>morphologyEx</code> gives me an aceptable result but some holes still remaining, in this last case, the holes doesn't fill even iterating on every contour and drawing it with <code>-1</code>. I can see that threshold image is really good, making the whole shape with lines, but I don't know how to continue...</p>
+
+<p><strong>Update</strong>
+I've changed my code so I get better results but I'm still getting some holes... If I could fill theese holes, the script would be perfect.</p>
+
+<pre><code>def get_contrasted(image, type=""dark"", level=3):
+    maxIntensity = 255.0 # depends on dtype of image data
+    phi = 1
+    theta = 1
+
+    if type == ""light"":
+        newImage0 = (maxIntensity/phi)*(image/(maxIntensity/theta))**0.5
+        newImage0 = array(newImage0,dtype=uint8)
+        return newImage0
+    elif type == ""dark"":
+        newImage1 = (maxIntensity/phi)*(image/(maxIntensity/theta))**level
+        newImage1 = array(newImage1,dtype=uint8)
+
+        return newImage1
+
+def sharp(image, level=3):
+    f = cv2.GaussianBlur(image, (level,level), level)
+    f = cv2.addWeighted(image, 1.5, f, -0.5, 0)
+    return f
+
+original_image = imread('imagen.jpg')
+# 1 Convert to gray &amp; Normalize
+gray_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
+gray_img = sharp(get_contrasted(gray_img))
+gray_img = normalize(gray_img, None, 0, 255, NORM_MINMAX, CV_8UC1)
+imshow(""Gray"", gray_img)
+
+# 2 Find Threshold
+gray_blur = cv2.GaussianBlur(gray_img, (7, 7), 0)
+adapt_thresh_im = cv2.adaptiveThreshold(gray_blur, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 1)
+max_thresh, thresh_im = cv2.threshold(gray_img, 0, 255, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)
+thresh = cv2.bitwise_or(adapt_thresh_im, thresh_im)
+
+# 3 Dilate
+gray = cv2.Canny(thresh, 88, 400, apertureSize=3)
+gray = cv2.dilate(gray, None, iterations=8)
+gray = cv2.erode(gray, None, iterations=8)
+imshow(""Trheshold"", gray)
+
+# 4 Flood
+contours, _ = cv2.findContours(gray, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+contour_info = []
+for c in contours:
+    contour_info.append((
+        c,
+        cv2.isContourConvex(c),
+        cv2.contourArea(c),
+    ))
+contour_info = sorted(contour_info, key=lambda c: c[2], reverse=True)
+max_contour = contour_info[0]
+holes = np.zeros(gray_img.shape, np.uint8)
+drawContours(holes, max_contour, 0, 255, -1)
+imshow(""Holes"", holes)
+
+mask = cv2.GaussianBlur(holes, (15, 15), 0)
+mask = np.dstack([mask] * 3)  # Create 3-channel alpha mask
+
+mask = mask.astype('float32') / 255.0  # Use float matrices,
+img = original_image.astype('float32') / 255.0  # for easy blending
+masked = (mask * img) + ((1 - mask) * (0,0,1))  # Blend
+masked = (masked * 255).astype('uint8')
+
+imshow(""Maked"", masked)
+waitKey()
+</code></pre>
+
+<h1>0 Original</h1>
+
+<p><img src=""https://i.stack.imgur.com/koAl2.jpg"" alt=""enter image description here""></p>
+
+<h1>1 Threshold</h1>
+
+<p><img src=""https://i.stack.imgur.com/2jhlL.jpg"" alt=""enter image description here""></p>
+
+<h1>2 Holes</h1>
+
+<p><img src=""https://i.stack.imgur.com/GuICX.jpg"" alt=""enter image description here""></p>
+
+<h1>3 Final Image</h1>
+
+<p><img src=""https://i.stack.imgur.com/zOPOV.jpg"" alt=""enter image description here""></p>
+","1381537","","1381537","","2015-06-30 12:30:58","2015-12-04 08:48:18","OpenCV remove background","<python><opencv>","4","9","5","",""
+"31133904","2","","31133635","2015-06-30 09:01:44","","3","","<p>There are two things here... the first is to find out why you want to do this. Because maybe you shouldn't.</p>
+
+<p>If you just want to access the owner's email address from a <code>Car</code> instance you don't need to add it as a field on the <code>Car</code> model, you can do:</p>
+
+<pre><code>my_car = Car.objects.get(owner=me)
+my_email = my_car.owner.email
+</code></pre>
+
+<p>This does two seperate db queries, the first to get the <code>Car</code> and the second to get the owning <code>User</code> when you access the ForeignKey.</p>
+
+<p>If you want to avoid this you can use <a href=""https://docs.djangoproject.com/en/1.8/ref/models/querysets/#select-related"" rel=""nofollow""><code>select_related</code></a>:</p>
+
+<pre><code>my_car = Car.objects.select_related().get(owner=me)
+my_email = my_car.owner.email
+</code></pre>
+
+<p>Now it's only one query, Django knows to do a join in the underlying SQL.</p>
+
+<p>But, assuming you know all this and you still really want to add the owner's email to the <code>Car</code> model. This is called <a href=""https://en.wikipedia.org/wiki/Denormalization"" rel=""nofollow"">'denormalisation'</a> and there can be valid performance reasons for doing it.</p>
+
+<p>One problem that arises is how to keep the email address in sync between the <code>User</code> and <code>Car</code> models. If you are deliberately pursuing denormalisation in your Django app I highly recommend you consider using <a href=""http://initcrash.github.io/django-denorm/"" rel=""nofollow"">django-denorm</a>. It installs triggers in the SQL db and provides a nice interface for specifying denormalised fields on your model.</p>
+","202168","","","","","2015-06-30 09:01:44","","","","0","","",""
+"31133905","1","","","2015-06-30 09:01:44","","-2","61","<p>Right now my app layout looks like <a href=""https://www.dropbox.com/s/orzmwe02a0l4z77/IMG-1.jpg?dl=0"" rel=""nofollow"">this</a>.</p>
+
+<p>I want it to look like <a href=""https://www.dropbox.com/s/cdxxtunc0h43j6n/IMG-2.jpg?dl=0"" rel=""nofollow"">this</a>.</p>
+
+<p>How can I achieve this ? I am using LinearLayout as a child of ScrollView.</p>
+","4489789","","473285","","2015-06-30 09:56:08","2015-06-30 09:56:08","LinearLayout with full width Android","<android><scrollview><android-linearlayout>","2","2","","",""
+"31133908","1","","","2015-06-30 09:01:53","","0","89","<p>I have an issue using the command <code>pointinterval</code> on gnuplot.</p>
+
+<p>E.g. the following minimal example</p>
+
+<pre><code>plot test.dat with linespoints pi -1
+</code></pre>
+
+<p>with test.dat being</p>
+
+<pre><code>1 2
+2 3
+3 4
+4 5
+</code></pre>
+
+<p>does not work properly. The outcome is as follows:</p>
+
+<pre><code>gnuplot&gt; plot ""test.dat"" with linespoints pi -1
+                                          ^
+         ';' expected
+</code></pre>
+
+<p>I have no clue why it won't work</p>
+","4137141","","","","","2015-06-30 09:01:53","Gnuplot pointinterval does not work","<gnuplot>","0","3","","",""
+"31133910","2","","31133504","2015-06-30 09:01:56","","0","","<p>Try formatting the float to string before sending the dict.</p>
+
+<p>Example -</p>
+
+<pre><code>cur.executemany(""""""Insert into temp_unicom values(%(Order Id)f,%(Name)s,%(Address)s)"""""",dict((k,v )if k != ""Order Id"" else (k,'%f'%(v)) for k,v in dict1.iteritems()))
+</code></pre>
+
+<p>Also, rename the dictionary to something else (I for example renamed to <code>dict1</code> , because otherwise it would replace the built-in <code>dict</code> function.</p>
+","795990","","795990","","2015-06-30 09:15:45","2015-06-30 09:15:45","","","","3","","",""
+"31133911","2","","31120117","2015-06-30 09:02:09","","0","","<p>I decided to use the code below to just edit the literal in the master page from the content page rather than run the function in the master page.</p>
+
+<pre><code> CType(Master.FindControl(""FavouritesCount""), Literal).Text = cnt
+</code></pre>
+","1101979","","","","","2015-06-30 09:02:09","","","","0","","",""
+"31133912","1","","","2015-06-30 09:02:13","","6","558","<p>I use Android Studio to write my App, the following code is my layout file, but sometimes Android Studio editor display A.png and sometime display B.png, it means that sometime the systme replace <code>android:text=""@string/myabout""</code> with real string ""About"", but I don't konw how to switch to the UI.</p>
+
+<p>And more, how can I change the code color of <code>android:text=""@string/myabout""</code> and <code>android:text=""Hard Code""</code>? You know that File-> Settings -> Editor is huge tree, I can't find what items I shoud to edit.</p>
+
+<pre><code>&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;
+
+&lt;RelativeLayout  xmlns:android=""http://schemas.android.com/apk/res/android""
+    android:layout_width=""fill_parent""
+    android:layout_height=""fill_parent""
+    android:background=""@drawable/border_ui""
+    android:orientation=""vertical"" &gt;
+
+     &lt;TextView
+            android:id=""@+id/textView1""
+            android:layout_width=""wrap_content""
+            android:layout_height=""wrap_content""
+            android:text=""@string/myabout""
+      /&gt;
+
+    &lt;TextView
+        android:id=""@+id/textView2""
+        android:layout_width=""wrap_content""
+        android:layout_height=""wrap_content""
+        android:text=""Hard Code""
+     /&gt;
+
+&lt;/RelativeLayout&gt;
+</code></pre>
+
+<p><strong>A.png</strong></p>
+
+<p><img src=""https://i.stack.imgur.com/3kJaR.png"" alt=""enter image description here""></p>
+
+<p><strong>B.png</strong>
+<img src=""https://i.stack.imgur.com/bZFOz.png"" alt=""enter image description here""></p>
+","828896","","","","","2015-07-08 07:55:51","How to switch to displayed UI and change font color in Android Studio?","<android-studio>","1","1","","",""
+"31133914","1","","","2015-06-30 09:02:17","","2","203","<p>I'm including 2 Apache licensed libraries into my Android app, when I attempt to generate the application I'm having the infamous ""Duplicate files during packaging"" error.</p>
+
+<p>My first attempt to solve was, as suggested in a lot of places (<a href=""https://stackoverflow.com/questions/22467127/error-duplicate-files-during-packaging-of-apk"" title=""e.g."">e.g.</a>), to exclude the files, it worked and my apk was generated.</p>
+
+<p>Then I realized that since 0.9.1. Gradle includes <code>pickFirst</code> option to place into the apk the first license found during compilation time. </p>
+
+<pre><code> packagingOptions {
+    pickFirst 'META-INF/LICENSE.txt'
+    pickFirst 'META-INF/NOTICE.txt'
+}
+</code></pre>
+
+<p>Problem is, Notice.txt contains only information about one of the licensed libraries, not both. For example, notice.txt of Apache Commons Codec is:</p>
+
+<blockquote>
+  <p>Apache Commons Codec Copyright 2002-2011 The Apache Software
+  Foundation</p>
+  
+  <p>This product includes software developed by The Apache Software
+  Foundation (<a href=""http://www.apache.org/"" rel=""nofollow noreferrer"">http://www.apache.org/</a>).</p>
+  
+  <p>-------------------------------------------------------------------------------- src/test/org/apache/commons/codec/language/DoubleMetaphoneTest.java
+  contains  test data from
+  <a href=""http://aspell.sourceforge.net/test/batch0.tab"" rel=""nofollow noreferrer"">http://aspell.sourceforge.net/test/batch0.tab</a>.</p>
+  
+  <p>Copyright (C) 2002 Kevin Atkinson (kevina@gnu.org). Verbatim copying
+   and distribution of this entire article is permitted in any medium, provided this notice is preserved.</p>
+  
+  <hr>
+</blockquote>
+
+<p>and Joda Time's:</p>
+
+<blockquote>
+  <p>=============================================================================
+  = NOTICE file corresponding to section 4d of the Apache License Version 2.0 =
+  ============================================================================= This product includes software developed by Joda.org
+  (<a href=""http://www.joda.org/"" rel=""nofollow noreferrer"">http://www.joda.org/</a>).</p>
+</blockquote>
+
+<p>My question is, is there a way to ""merge"" the <code>license</code> and <code>notice</code> files automatically? I assume this is a common problem so I guess I'm not the first one facing it.</p>
+","1668144","","-1","","2017-05-23 11:52:56","2017-01-25 11:28:32","Duplicate files during packaging of APK, how to include several licenses in gradle","<android><gradle>","1","3","","",""
+"31133915","1","","","2015-06-30 09:02:32","","4","524","<p>I am developing two node packages registered with npm, and using es6 syntax.
+Each package has only one es6 module exporting a single class.</p>
+
+<ul>
+<li>package <code>A</code> has no dependencies</li>
+<li>package <code>B</code> depends on <code>A</code></li>
+</ul>
+
+<p><strong>Class A</strong></p>
+
+<pre><code>export default class A {...}
+</code></pre>
+
+<p><strong>Class B</strong></p>
+
+<pre><code>import A from 'A'
+
+export default class B {...}
+</code></pre>
+
+<p>Each package has the following structure
+<code>
+modules/
+   index.js (es6 source)
+index.js (commonjs source)
+</code></p>
+
+<ul>
+<li>Source code is in <code>es6/index.js</code></li>
+<li>It is transpiled to es5 / commonjs using Babel</li>
+</ul>
+
+<p><strong>Question</strong></p>
+
+<p>I want to give users of my A and B packages the choice to use es6 (by importing B class which itself would import A es6 class and not es5 A) or es5 sources (by requiring es5 function B which itself requires es5 function A): What is the best way to achieve it?</p>
+","3114505","","","","","2015-08-18 13:44:20","Releasing es6 and es5 sources with npm","<javascript><node.js><ecmascript-6><babeljs>","1","5","2","",""
+"31133917","2","","31129968","2015-06-30 09:02:44","","3","","<p>No idea on what the last field in the second line means. The rest can be deduced easily:</p>
+
+<pre><code>def read_off(file):
+    if 'OFF' != file.readline().strip():
+        throw 'Not a valid OFF header'
+    n_verts, n_faces, n_dontknow = tuple([int(s) for s in file.readline().strip().split(' ')])
+    verts = []
+    for i_vert in range(n_verts):
+        verts.append([float(s) for s in readline().strip().split(' ')])
+    faces = []
+    for i_face in range(n_faces):
+        faces.append([int(s) for s in readline().strip().split(' ')][1:])
+    return verts, faces
+</code></pre>
+","524368","","524368","","2015-06-30 16:46:06","2015-06-30 16:46:06","","","","14","","",""
+"31133919","2","","31133716","2015-06-30 09:02:45","","1","","<p>Your first idea was correct. </p>
+
+<pre><code>col= col.astype(np.float)
+for i in range (col.shape [0]):
+    if (np.isnan(col[i])):
+        col=np.delete(col,i)
+        x= np.delete(x,i)
+</code></pre>
+
+<p>Is almost correct. Shape return the total length of your object, but you have to go from 0 to this length -1. So your for line would be like :</p>
+
+<pre><code>for i in range (0, col.shape [0]):
+</code></pre>
+
+<p>But since you are removing elements from the array, you may have a smaller array while computing this thing. So if you want to access the fifth and last element and you removed an element before, col will no longer have 5 elements. I suggest you loop backward on your coloumn, like this</p>
+
+<pre><code>for i in range(col.shape [0]-1, -1, -1):
+</code></pre>
+","2634447","","2634447","","2015-06-30 09:17:19","2015-06-30 09:17:19","","","","3","","",""
+"31133920","1","","","2015-06-30 09:02:53","","2","177","<p>I am using a mesh animation on canvas called Flat Surface Shader, here's the <a href=""https://github.com/wagerfield/flat-surface-shader"" rel=""nofollow"">github</a>:</p>
+
+<p>I basically use 2 js files, which finds the div id=""surface"" and puts the animation in there.</p>
+
+<p>It works great but i want to duplicate it on the different parts in html. And use them as a section seperator header background.</p>
+
+<p>Tips:</p>
+
+<ol>
+<li><p>I think I should either run something like initialize() fuction for every different div id. But couldn't make it work.</p></li>
+<li><p>Or maybe I can do something here in the js file?</p></li>
+</ol>
+
+<p>Global Properties</p>
+
+<pre><code>var now, start = Date.now();    
+var center = FSS.Vector3.create();    
+var attractor = FSS.Vector3.create();
+
+
+var surface = document.getElementById('home');    
+var output = document.getElementById('surface');    
+var renderer, scene, mesh, geometry, material;    
+var canvasRenderer;    
+var gui, autopilotController;
+</code></pre>
+","5043633","","4595675","","2015-06-30 09:20:37","2015-06-30 09:20:37","Multiple Flat Surface Shader Animations on One Page","<javascript><jquery><mesh>","0","0","","",""
+"31133921","1","","","2015-06-30 09:02:57","","3","119","<p>The other day I had a problem that was kind of interesting. It concerns scheduling a series of ""tournaments"". The following are the constraints:</p>
+
+<ul>
+<li>There are 7 teams named A, B, ..., G</li>
+<li>A tournament contains 3 teams, all teams in a tournament plays 1 game against the other 2 teams. I.e. a tournament consists of 3 games</li>
+<li>Each team hosts two tournaments</li>
+<li>Each team travels to four tournaments beside the tournaments they host</li>
+<li>When the series is done all teams should have played all other teams twice</li>
+</ul>
+
+<p>Each travel is associated with a distance. The goal is to find a schedule such that the difference between the shortest and the longest travelling team is minimal.</p>
+
+<p>Not exactly a traveling-salesman problem, but sort of related. I'll be happy to remove that tag if there are strong opinions against it.</p>
+
+<p>Some sample data:</p>
+
+<pre><code>create table d
+(   source      varchar(20) not null
+,   destination      varchar(20) not null
+,   distance    int not null
+,       primary key (source, destination) );
+
+insert into d (source, destination, distance)
+select 'A', destination, distance
+from (values  ('B',204)
+          ,   ('C',31)
+          ,   ('D',185)
+          ,   ('E',213)
+          ,   ('F',142)
+          ,   ('G',165)
+     ) T(destination, distance);
+
+insert into d (source, destination, distance)
+select 'B', destination, distance
+from (values ('C',230)
+        ,    ('D',102)
+        ,    ('E',169)
+        ,    ('F',152)
+        ,    ('G',224)
+     ) T(destination, distance);
+
+insert into d (source, destination, distance)
+select 'C', destination, distance
+from (values ('D',200)
+            ,('E',224)
+            ,('F',157)
+            ,('G',135)
+     ) T(destination, distance);
+
+insert into d (source, destination, distance)
+select 'D', destination, distance
+from (values ('E',68)
+            ,('F',51)
+            ,('G',123)
+     ) T(destination, distance);
+
+insert into d (source, destination, distance)
+select 'E', destination, distance
+from (values ('F',52)
+        ,    ('G',88)
+     ) T(destination, distance);
+
+insert into d (source, destination, distance)
+select 'F', destination, distance
+from (values   ('G',80)
+     ) T(destination, distance);
+
+create view dv as
+select source, destination, distance from d
+union all
+select destination, source, distance from d;
+</code></pre>
+
+<p>I started out with the assumption that it would be easiest to pick 4 travels for each team and filter from there. Let's call this relation team_travel. By cross-joining A's team_travels with B's team_travel etc we get all possible combinations of team_travels. From there we can exclude those that does not contain exactly 4 'A', 4 'B', etc. By ordering what remains with the difference of the greatest and the least travel distance we can get the result.</p>
+
+<p>This is butt-ugly and can certainly be improved:</p>
+
+<pre><code>create or replace function cnt_occ(s varchar(28), c varchar(1))
+returns int
+    return values length(s) - length(replace(s,c,null));
+
+with t(s,d,n) as (
+    select source, destination, distance
+    from dv
+), team_travel(s, d1,d2,d3,d4,n1,n2,n3,n4) as (
+    select t1.s, t1.d, t2.d, t3.d, t4.d, t1.n,t2.n,t3.n,t4.n
+    from t as t1
+    join t as t2
+        on t2.d &gt; t1.d
+        and t1.s = t2.s
+    join t as t3
+        on t3.d &gt; t2.d
+        and t1.s = t3.s
+    join t as t4
+        on t4.d &gt; t3.d
+        and t1.s = t4.s
+    where t1.s not in (t1.d,t2.d,t3.d,t4.d)
+)
+select
+       a1.s||'-&gt;'||a1.d1||a1.d2||a1.d3||a1.d4,a1.n1+a1.n2+a1.n3+a1.n4
+    ,  a2.s||'-&gt;'||a2.d1||a2.d2||a2.d3||a2.d4,a2.n1+a2.n2+a2.n3+a2.n4
+    ,  a3.s||'-&gt;'||a3.d1||a3.d2||a3.d3||a3.d4,a3.n1+a3.n2+a3.n3+a3.n4
+    ,  a4.s||'-&gt;'||a4.d1||a4.d2||a4.d3||a4.d4,a4.n1+a4.n2+a4.n3+a4.n4
+    ,  a5.s||'-&gt;'||a5.d1||a5.d2||a5.d3||a5.d4,a5.n1+a5.n2+a5.n3+a5.n4
+    ,  a6.s||'-&gt;'||a6.d1||a6.d2||a6.d3||a6.d4,a6.n1+a6.n2+a6.n3+a6.n4
+    ,  a7.s||'-&gt;'||a7.d1||a7.d2||a7.d3||a7.d4,a7.n1+a7.n2+a7.n3+a7.n4
+    ,  greatest(a1.n1+a1.n2+a1.n3+a1.n4
+            ,  a2.n1+a2.n2+a2.n3+a2.n4
+            ,  a3.n1+a3.n2+a3.n3+a3.n4
+            ,  a4.n1+a4.n2+a4.n3+a4.n4
+            ,  a5.n1+a5.n2+a5.n3+a5.n4
+            ,  a6.n1+a6.n2+a6.n3+a6.n4
+            ,  a7.n1+a7.n2+a7.n3+a7.n4)
+    -  least(a1.n1+a1.n2+a1.n3+a1.n4
+        ,  a2.n1+a2.n2+a2.n3+a2.n4
+        ,  a3.n1+a3.n2+a3.n3+a3.n4
+        ,  a4.n1+a4.n2+a4.n3+a4.n4
+        ,  a5.n1+a5.n2+a5.n3+a5.n4
+        ,  a6.n1+a6.n2+a6.n3+a6.n4
+        ,  a7.n1+a7.n2+a7.n3+a7.n4) as min_diff
+from       ( select * from team_travel where s = 'A' ) as a1
+cross join ( select * from team_travel where s = 'B' ) as a2
+cross join ( select * from team_travel where s = 'C' ) as a3
+cross join ( select * from team_travel where s = 'D' ) as a4
+cross join ( select * from team_travel where s = 'E' ) as a5
+cross join ( select * from team_travel where s = 'F' ) as a6
+cross join ( select * from team_travel where s = 'G' ) as a7
+where cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'A') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'B') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'C') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'D') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'E') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'F') = 4
+  and cnt_occ(a1.d1||a1.d2||a1.d3||a1.d4
+            ||a2.d1||a2.d2||a2.d3||a2.d4
+            ||a3.d1||a3.d2||a3.d3||a3.d4
+            ||a4.d1||a4.d2||a4.d3||a4.d4
+            ||a5.d1||a5.d2||a5.d3||a5.d4
+            ||a6.d1||a6.d2||a6.d3||a6.d4
+            ||a7.d1||a7.d2||a7.d3||a7.d4, 'G') = 4
+order by min_diff
+fetch first 100 rows only
+</code></pre>
+
+<p>There has to be something more elegant than this, thoughts?</p>
+","3592396","","3592396","","2015-06-30 15:38:10","2015-06-30 15:38:10","Least-distance scheduling scenario","<sql><db2><traveling-salesman>","0","3","2","",""
+"31133922","1","31154014","","2015-06-30 09:02:58","","0","46","<p>Please assist me in figuring out how to create an endpoint from a java class. A lot has changed in android studio, and the ability to:</p>
+
+<p>Tools -> Google Cloud Tools -> Generate Endpoint</p>
+
+<p>Or</p>
+
+<p>Click on the java class and then select Generate Endpoint </p>
+
+<p>Seems to have disappeared with the new android studio? What should I do, or am I missing something I need to do within android studio?</p>
+
+<p>Code:</p>
+
+<pre><code>public class SearchObject {
+
+    private String Location;
+
+    public String getLocation() {
+        return Location;
+    }
+
+    public void setLocation(String location) {
+        Location = location;
+    }
+}
+</code></pre>
+
+<p>Even tried to manully create the endpoint but doesn't seem to work, the reponse object is giving an error:</p>
+
+<pre><code>@Api(name = ""searchApi"",
+        version = ""v1"",
+        namespace = @ApiNamespace(ownerDomain = ""backend.co.za"",
+                ownerName = ""backend.co.za"",
+                packagePath=""""))
+public class SearchAPI {
+    @ApiMethod(name = ""Search"")
+    public void sayHi(@Named(""location"") String location) {
+        SearchObject response = new SearchObject();
+        response.setData(""Hi, "" + location); //Problem, cannot resolve method
+
+        return response;
+    }
+
+}
+</code></pre>
+","3090337","","","","","2015-07-01 06:29:55","Google cloud tools to generate endpoint missing","<android-studio><google-cloud-endpoints>","2","0","","",""
+"31133923","2","","31111326","2015-06-30 09:03:00","","0","","<p>Resolved.. Here's the query</p>
+
+<pre><code>DECLARE @AttachVersion VARCHAR(MAX)
+DECLARE @AttachVersionHandle INT
+SET @AttachVersion = '&lt;AttachVersion&gt;&lt;Version&gt;1&lt;/Version&gt;&lt;Version&gt;2&lt;/Version&gt;&lt;Version&gt;3&lt;/Version&gt;&lt;Version&gt;4&lt;/Version&gt;&lt;/AttachVersion&gt;'
+
+EXEC sp_xml_preparedocument @AttachVersionHandle OUTPUT, @AttachVersion
+
+SELECT [Value] FROM OPENXML( @AttachVersionHandle, '/AttachVersion/Version') WITH (VALUE INT '.')
+</code></pre>
+","5060392","","","","","2015-06-30 09:03:00","","","","0","","",""
+"31133924","1","","","2015-06-30 09:03:06","","1","107","<p>I'm coding a program with a typical main window GUI interface with the <code>QMainWindow</code> and <code>QMdiWindow</code> Qt 5.4 classes similar to the one of the below picture (from the <a href=""http://doc.qt.io/qt-5/qtwidgets-mainwindows-mdi-example.html"" rel=""nofollow noreferrer"">official documentation</a>).</p>
+
+<p><img src=""https://i.stack.imgur.com/w8PGG.png"" alt=""Qt MDI""></p>
+
+<p>Every time the active subwindow changes the <code>updateWindowMenu()</code> method is called and it clears and repopulates the <code>Window</code> menu with <code>QActions</code> pointing to one of each subwindows, that is it, when you click an action the subwindow associated with this action will be brought to the front and will become the active subwindow. The association is done with <code>QSignalMapper</code> because <code>updateWindowMenu()</code> needs the current active subwindow (if any).</p>
+
+<p>The problem arises when I click an action, its signal is not triggered and hence the subwindow associated is not brought to the front. After investigating I realised that what hampers the action triggering is the call to <code>menuWindow-&gt;removeAction(mySubwindowActions-&gt;at(n))</code> (<code>menuWindow</code> comes from an <code>.iu</code> file created with Qt Designer). That is it, if I comment out</p>
+
+<pre><code>// for (int n=0; n&lt;mySubwindowActions-&gt;size(); ++n)
+//    menuWindow-&gt;removeAction(mySubwindowActions-&gt;at(n));
+</code></pre>
+
+<p>duplicated actions to the <code>Window</code> menu will be added every time <code>updateWindowMenu()</code> is called but they will work as expected and they will bring to the front the associated subwindow.</p>
+
+<p>Why this anomalous behaviour? How can I remove actions without hindering the normal working of new added actions?</p>
+
+<p>WindowMain.h</p>
+
+<pre><code>class WindowMain : public QMainWindow, public Ui::mainWindow {
+    Q_OBJECT
+
+    private:
+        QSignalMapper* mySignalMapper;
+        QList&lt;QAction*&gt;* mySubwindowActions;
+
+    private slots:
+        void updateWindowMenu(QMdiSubWindow*);
+        void setActiveSubWindow(QWidget*);
+}
+</code></pre>
+
+<p>WindowMain.cpp</p>
+
+<pre><code>void WindowMain::WindowMain() {
+    connect(myMdiArea, &amp;QMdiArea::subWindowActivated, this, &amp;WindowMain::updateWindowMenu);
+
+    mySignalMapper = new QSignalMapper(this);
+    connect(mySignalMapper, static_cast&lt;void (QSignalMapper::*)(QWidget*)&gt;(&amp;QSignalMapper::mapped), this, &amp;WindowMain::setActiveSubWindow);
+
+    mySubwindowActions = new QList&lt;QAction*&gt;();
+}
+
+
+void WindowMain::updateWindowMenu(QMdiSubWindow* mdiSubwindow) {
+    for (int n=0; n&lt;mySubwindowActions-&gt;size(); ++n)
+        menuWindow-&gt;removeAction(mySubwindowActions-&gt;at(n));
+    mySubwindowActions-&gt;clear();
+
+    if (mdiSubwindow != 0) {
+        QList&lt;QMdiSubWindow*&gt; subwindows = myMdiArea-&gt;subWindowList();
+        for (int n=0; n&lt;subwindows.size(); ++n) {
+            QAction* actionSubwindow = menuWindow-&gt;addAction(subwindows.at(n)-&gt;widget()-&gt;windowTitle());
+            mySubwindowActions-&gt;append(actionSubwindow);
+            mySignalMapper-&gt;setMapping(actionSubwindow, subwindows.at(n));
+            connect(actionSubwindow, &amp;QAction::triggered, mySignalMapper, static_cast&lt;void (QSignalMapper::*)()&gt;(&amp;QSignalMapper::map));
+        }
+    }
+}
+
+
+void WindowMain::setActiveSubWindow(QWidget* subWindow) {
+    myMdiArea-&gt;setActiveSubWindow(qobject_cast&lt;QMdiSubWindow*&gt;(subWindow));
+}
+</code></pre>
+","372899","","372899","","2015-06-30 09:58:12","2015-06-30 09:58:12","QAction not triggered after QAction removed from QMenu","<c++><qt><qmenu><qaction>","0","2","","",""
+"31133925","1","","","2015-06-30 09:03:10","","1","31","<p>i'm triing to load the various page of the site on main div, but the div don't resize on load.</p>
+
+<pre><code>&lt;ul id=""menu""&gt;
+  &lt;li&gt;&lt;a href=""home.html"" target=""iframe_a""&gt;Home&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;
+        &lt;a href=""servizi.html"" target=""iframe_a""&gt;Servizi&lt;/a&gt;
+        &lt;ul&gt;
+            &lt;li&gt;
+                &lt;a href=""progetti.html"" target=""iframe_a""&gt;Progettazione&lt;/a&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href=""./servizi/wip.html"" target=""iframe_a""&gt;Urbanistica&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""./servizi/wip.html"" target=""iframe_a""&gt;Edilizia&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href=""./servizi/wip.html"" target=""iframe_a""&gt;Abbattimento barriere architettoniche&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+...
+...
+...
+</code></pre>
+
+<p>this is a section of menu</p>
+
+<p>and this is the div (previously was an iframe but don't work equally)</p>
+
+<pre><code>&lt;div&gt; 
+&lt;object type=""text/html"" data=""home.html"" name=""iframe_a"" id=""iframe_a"" width=80% height=""600px"" min-height:""600px"" style=""overflow:hidden;border:5px ridge blue""&gt;
+    &lt;/object&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>if i remove the height=""600px"" the div is about 100px end don't modify it's height on change</p>
+
+<p>all the page i'm trying to load onto the main div are ""simple"" just </p>
+
+<pre><code>&lt;body&gt; 
+&lt;div&gt; 
+text/image of the page with &lt;p&gt; etc..
+&lt;/div&gt;
+&lt;/body&gt;
+</code></pre>
+
+<p>no special effect or something.</p>
+
+<p>were i'm doing wrong?</p>
+","5064624","","","","","2015-06-30 09:13:30","adjust div height on load new page from menu","<html><menu><resize>","1","0","","",""
+"31133926","2","","3280323","2015-06-30 09:03:17","","3","","<p>This is a few years on, but I've needed to use this functionality recently and, for certain dates in years 2016/2020 (such as January 31st), none of the code here works.</p>
+
+<p>It's not the most efficient by any means, but hopefully this helps someone out as it's the only thing I could get working for those years along with every other year.</p>
+
+<pre><code>Date.prototype.getWeekOfMonth = function () {
+    var dayOfMonth = this.getDay();
+    var month = this.getMonth();
+    var year = this.getFullYear();
+    var checkDate = new Date(year, month, this.getDate());
+    var checkDateTime = checkDate.getTime();
+    var currentWeek = 0;
+
+    for (var i = 1; i &lt; 32; i++) {
+        var loopDate = new Date(year, month, i);
+
+        if (loopDate.getDay() == dayOfMonth) {
+            currentWeek++;
+        }
+
+        if (loopDate.getTime() == checkDateTime) {
+            return currentWeek;
+        }
+    }
+};
+</code></pre>
+","664822","","","","","2015-06-30 09:03:17","","","","2","","",""
+"31133927","1","","","2015-06-30 09:03:17","","1","815","<p>I am trying to integrate mod_jk, httpd with JBoss EAP 6.4, but I am unable to connect without using port number.</p>
+
+<p>My standalone.xml file has following entry:</p>
+
+<pre><code>&lt;subsystem xmlns=""urn:jboss:domain:web:2.2"" default-virtual-server=""default-host"" instance-id=""/opt/java/sun-jdk-1.7"" native=""false""&gt;
+            &lt;connector name=""http"" protocol=""HTTP/1.1"" scheme=""http"" socket-binding=""http""/&gt;
+            &lt;connector name=""ajp"" protocol=""AJP/1.3"" scheme=""http"" socket-binding=""ajp"" enabled=""true""/&gt;
+            &lt;virtual-server name=""default-host"" enable-welcome-root=""false""&gt;
+                &lt;alias name=""localhost""/&gt;
+                &lt;alias name=""example.com""/&gt;
+            &lt;/virtual-server&gt;
+        &lt;/subsystem&gt;
+</code></pre>
+
+<p>Port configurations are:</p>
+
+<pre><code>&lt;socket-binding-group name=""standard-sockets"" default-interface=""public"" port-offset=""${jboss.socket.binding.port-offset:0}""&gt;
+        &lt;socket-binding name=""management-native"" interface=""management"" port=""${jboss.management.native.port:7204}""/&gt;
+        &lt;socket-binding name=""management-http"" interface=""management"" port=""${jboss.management.http.port:7203}""/&gt;
+        &lt;socket-binding name=""management-https"" interface=""management"" port=""${jboss.management.https.port:7205}""/&gt;
+        &lt;socket-binding name=""http"" port=""7201""/&gt;
+        &lt;socket-binding name=""https"" port=""7202""/&gt;
+        &lt;socket-binding name=""ajp"" port=""7206""/&gt;
+        &lt;socket-binding name=""remoting"" port=""7207""/&gt;
+        &lt;socket-binding name=""txn-recovery-environment"" port=""7208""/&gt;
+        &lt;socket-binding name=""txn-status-manager"" port=""7209""/&gt;
+        &lt;socket-binding name=""ajb"" port=""7209""/&gt;
+        &lt;outbound-socket-binding name=""mail-smtp""&gt;
+            &lt;remote-destination host=""localhost"" port=""25""/&gt;
+        &lt;/outbound-socket-binding&gt;
+    &lt;/socket-binding-group&gt;
+</code></pre>
+
+<p>My worker.properties(/httpd/conf/) has</p>
+
+<pre><code>worker.list=loadbalancer,status
+# Define Node1
+# modify the host as your host IP or DNS name.
+worker.node1.port=7206
+worker.node1.host=localhost
+worker.node1.type=ajp13
+worker.node1.lbfactor=1
+worker.node1.prepost_timeout=10000 #Not required if using ping_mode=A
+worker.node1.connect_timeout=10000 #Not required if using ping_mode=A
+worker.node1.ping_mode=A #As of mod_jk 1.2.27
+
+# Load-balancing behaviour
+worker.loadbalancer.type=lb
+worker.loadbalancer.balance_workers=node1
+worker.loadbalancer.sticky_session=1
+
+# Status worker for managing load balancer
+worker.status.type=status
+</code></pre>
+
+<p>Steps, I followed for configuring jboss with mod_jk are:</p>
+
+<pre><code>./jboss-cli.sh
+connect localhost:7204
+/profile=/subsystem=web:write-attribute(name=""instance-id"",value=""/opt/java/sun-jdk-1.7"")
+/system-property=UseJK/:add(value=true)
+/subsystem=web:read-children-names(child-type=connector)
+/subsystem=web/connector=http:read-resource(recursive=true)
+{
+    ""outcome"" =&gt; ""success"",
+    ""result"" =&gt; {
+        ""enable-lookups"" =&gt; false,
+        ""enabled"" =&gt; true,
+        ""executor"" =&gt; undefined,
+        ""max-connections"" =&gt; undefined,
+        ""max-post-size"" =&gt; 2097152,
+        ""max-save-post-size"" =&gt; 4096,
+        ""name"" =&gt; ""http"",
+        ""protocol"" =&gt; ""HTTP/1.1"",
+        ""proxy-binding"" =&gt; undefined,
+        ""proxy-name"" =&gt; undefined,
+        ""proxy-port"" =&gt; undefined,
+        ""redirect-binding"" =&gt; undefined,
+        ""redirect-port"" =&gt; 443,
+        ""scheme"" =&gt; ""http"",
+        ""secure"" =&gt; false,
+        ""socket-binding"" =&gt; ""http"",
+        ""virtual-server"" =&gt; undefined,
+        ""configuration"" =&gt; undefined
+    },
+    ""response-headers"" =&gt; {""process-state"" =&gt; ""reload-required""}
+}
+/socket-binding-group=standard-sockets/socket-binding=ajb:add(port=7209)
+/subsystem=web/connector=ajp:add(socket-binding=ajp, protocol=""AJP/1.3"", enabled=true, scheme=""http"")
+</code></pre>
+
+<p>Any pointer as what can be the possible issue?</p>
+","4707664","","4707664","","2015-06-30 09:50:27","2015-06-30 09:50:27","Use httpd and mod_jk with JBoss EAP 6.4","<jboss7.x><httpd.conf><mod-jk><jboss-eap-6>","0","0","","",""
+"31133928","2","","31131832","2015-06-30 09:03:17","","0","","<pre><code>Array
+(
+    [name] =&gt; Indian Identity
+    [description] =&gt; Description from 'Ranjit Hoskote\'s The Complicit Observer provides an art-historical account of Sudhir Patwardhan\'s career, which spans over three decades and ranges across painting, drawing, township.' 
+    [clsfication] =&gt; this is classification 
+   )
+</code></pre>
+
+<p>try this. and let me know if it is working.</p>
+","2117740","","","","","2015-06-30 09:03:17","","","","1","","",""
+"31133929","2","","31133850","2015-06-30 09:03:27","","1","","<p>You can use <code>data-*</code> attributes to achieve this. In your HTML, you can add that attribute with the <code>$abc</code> PHP variable:</p>
+
+<pre class=""lang-html prettyprint-override""><code>&lt;a href=""#"" data-var=""&lt;?php echo $abc ?&gt;""&gt;Foo&lt;/a&gt;
+</code></pre>
+
+<p>Then in your external JS file, you can read this attribute from the element which raised the event and include it in the AJAX data:</p>
+
+<pre class=""lang-js prettyprint-override""><code>$('a').click(function(e) {
+    e.preventDefault();
+    $.ajax({
+        url: '/bar/',
+        data: {
+            foobar: $(this).data('var')
+        }
+    });
+});
+</code></pre>
+","519413","","","","","2015-06-30 09:03:27","","","","0","","",""
+"15604024","1","15604045","","2013-03-24 21:08:00","","-2","167","<p>I'm trying to get the ip address of my server, but it gets 127.0.1.1 instead of 127.0.0.1.  Where is the error? Also how can I get the real IP address, not the localhost address.</p>
+
+<pre><code>#define MAXHOSTNAME 256
+#define DEBUG
+
+
+    char * getIPAddress()
+    {
+        char myname[ MAXHOSTNAME + 1 ];
+        static char IPinASCII[ MAXHOSTNAME ];   /* Oversized */
+        struct hostent * hp;
+
+        memset( myname, 0, MAXHOSTNAME + 1 );   /* Init */
+        memset( IPinASCII, 0, MAXHOSTNAME );
+
+        gethostname( myname, MAXHOSTNAME );
+    #ifdef DEBUG
+        printf( ""hostname is %s\n"", myname );
+    #endif /* DEBUG */
+
+        hp = gethostbyname( myname );
+        if( hp == NULL )
+        {
+            perror( ""gethostbyname"" );
+            return( ""IP not found"" );
+        }
+
+        inet_ntop( hp-&gt;h_addrtype, hp-&gt;h_addr_list[ 0 ], IPinASCII,
+            MAXHOSTNAME ) ;
+
+    #ifdef DEBUG
+        printf( ""canonical hostname is %s at IP %s\n"", hp-&gt;h_name, IPinASCII );
+    #endif /* DEBUG */
+
+        return( IPinASCII );
+    }
+</code></pre>
+
+<p>user@user-desktop:~/Desktop/My Code$ ./ipprint 
+hostname is user-desktop
+canonical hostname is user-desktop at IP 127.0.1.1
+127.0.1.1</p>
+","1985594","","366377","","2013-03-24 21:16:18","2013-03-24 21:16:18","Get Ip address function not working well","<c><sockets><ip>","2","0","","",""
+"15604025","2","","15603693","2013-03-24 21:08:17","","0","","<p>This</p>
+
+<pre><code>this.getContentPane().board.add(gridView[row][col]);
+</code></pre>
+
+<p>Does not make any sense. You added <code>board</code> to the content pane in your constructor, but this does not mean that <code>board</code> is now a field of the content pane. So </p>
+
+<pre><code>getContentPane().board
+</code></pre>
+
+<p>Should fail to compile.</p>
+
+<p>You should probably make <code>board</code> a field of your class, rather than declaring it a local variable in your constructor. Then you will able to refer to <code>board</code> throughout the body of your class.</p>
+
+<p>Basic example:</p>
+
+<pre><code>public class Example
+{
+    private JPanel board;
+
+    public Example()
+    {
+         board = new JPanel();
+         getContentPane().add(board);
+         //assuming above code takes place in the constructor
+         JButton load = new JButton(""load"");
+         load.addActionListener(new ActionListener()
+         {
+              public void actionPerformed(ActionEvent e)
+              {
+                    ...lots of code
+                    //as board is no longer a local variable this will compile
+                    board.add(gridView[row][col]);
+              }
+         }
+    }
+}
+</code></pre>
+
+<p>Note that you probably want to add <code>load</code> to your frame at some point.</p>
+","1530508","","","","","2013-03-24 21:08:17","","","","0","","",""
+"15604026","2","","15603958","2013-03-24 21:08:36","","0","","<p>You can't centre a block element unless you give it a defined width. Otherwise the browser will give that element as much width is available, which means it's already centred (with zero space to the left and zero space to the right).</p>
+
+<p>Use <code>min-width</code> and/or <code>max-width</code> to give the element a defined width which is more flexible than a single <code>width</code> value, and then give the element a <code>margin: 1em auto</code> style to centre it horizontally within the unused width available in its parent element.</p>
+","1515834","","","","","2013-03-24 21:08:36","","","","0","","",""
+"15604027","1","15635266","","2013-03-24 21:08:38","","1","2236","<p>It appears that L4 is hardcoded to use SMTP with Swiftmailer. How can we change the transport type to sendmail?</p>
+","741099","","","","","2013-03-26 11:08:23","Change Mailing Transport in Laravel 4","<php><ubuntu><laravel><swiftmailer><laravel-4>","1","0","","",""
+"15604028","2","","15603982","2013-03-24 21:08:38","","3","","<p>First, be sure that regular expressions are what you really want. They have a habit of getting ugly.</p>
+
+<p>But if you are sure, this should do the trick:</p>
+
+<pre><code>""((\\.|[^\\""])*)""
+</code></pre>
+
+<p>The outer-brackets are only so that you can fetch the content of the string without the quotes. If you don't need that, you can just use <code>""(\\.|[^\\""])*""</code>.</p>
+
+<p>To send this to PHP, you can use a string with single quotes (which does no escaping);</p>
+
+<pre><code>'""((\\.|[^\\""])*)""'
+</code></pre>
+
+<p>or if you must use double-quotes, escape it as needed:</p>
+
+<pre><code>""\""((\\\\.|[^\\\\\""])*)\""""
+</code></pre>
+","1180785","","","","","2013-03-24 21:08:38","","","","1","","",""
+"15604029","1","15604203","","2013-03-24 21:08:41","","1","95","<p>I am quite new on SQL and I am trying to practice to improve myself.</p>
+
+<p>I have a database which has a </p>
+
+<p>Table : Players, Teams, Plays, and Wins</p>
+
+<p>Players : pid, pname, age, country</p>
+
+<p>Plays   : pid, season, tid, value  ( pid -> pid in Players, tid -> tid in Teams )</p>
+
+<p>Teams   : tid, tname, tcolor, tbudget</p>
+
+<p>Wins    : wtid, ltid, season, wscore, lscore ( wtid,ltid -> tid in Teams )</p>
+
+<hr>
+
+<p>The question is <code>Find the name of the players whose played in atleast 2 dif. teams with same color</code></p>
+
+<p>What I did is </p>
+
+<pre><code>SELECT DISTINCT P.pname 
+FROM Players P
+    ,Teams T1 
+GROUP BY T1.tcolor
+HAVING 1 &lt; (
+   SELECT COUNT (10)
+   FROM Teams T2
+   WHERE T1.tcolor=T2.tcolor)
+</code></pre>
+
+<p>When I try to query this , I get an error which is ;</p>
+
+<pre><code>Error Code: 1630
+FUNCTION PRALATEST.COUNT does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+</code></pre>
+
+<p>In which part am I doing wrong?</p>
+","1492785","","1492785","","2013-03-24 21:34:33","2013-03-24 21:34:33","Database Count & Group By error","<mysql><sql><database><count><group-by>","2","0","","",""
+"15604030","2","","15603435","2013-03-24 21:08:44","","0","","<p>Please read the following code to see how I would debug your code. Also I realised you will need to reset one of your arrays with mysql_data_seek():  </p>
+
+<pre><code>$tableheaders=mysql_query(""SELECT * from `winetable`"");
+$products=mysql_query(""SELECT * FROM `wines`"");
+
+//check the number of results before looping
+if(mysql_num_rows($tableheaders) &gt; 0 &amp;&amp; mysql_num_rows($products) &gt; 0){
+
+    while ($row=mysql_fetch_assoc($products)){
+        echo '&lt;tr&gt;';
+
+        //check what is in the array
+        var_dump($row);
+
+        while ($rowi=mysql_fetch_assoc($tableheaders)){
+
+            //check what is in the array
+            var_dump($rowi);
+
+            $column=$rowi['Title'];
+            echo '&lt;td&gt;';
+            echo $row[$column];
+            echo '&lt;/td&gt;';
+        }
+        echo '&lt;/tr&gt;';
+
+        //reset the $tableheaders array pointer back to 0 for next loop
+        mysql_data_seek($tableheaders, 0);
+    }
+}
+</code></pre>
+","959664","","","","","2013-03-24 21:08:44","","","","1","","",""
+"15604031","2","","15603832","2013-03-24 21:08:45","","0","","<p>You can try something like this:</p>
+
+<pre><code>    public class TestSOF {
+
+        private ArrayList &lt;Integer&gt; testList = new ArrayList &lt;Integer&gt;();
+        private Integer first, last;
+
+        public void fillArray(){
+
+            testList.add(10);
+            testList.add(20);
+            testList.add(30);
+            testList.add(30);
+            testList.add(20);
+            testList.add(10);
+            testList.add(10);
+            testList.add(20);
+        }
+
+        public ArrayList getArray(){
+
+            return this.testList;
+        }
+
+        public void sortArray(){
+
+            Collections.sort(testList);
+        }
+
+        public void checkPosition(int element){
+
+            if (testList.contains(element)){
+
+                first = testList.indexOf(element);
+                last = testList.lastIndexOf(element);
+
+                System.out.println(""The element "" + element + ""has it's first appeareance on position "" 
+            + first + ""and it's last on position "" + last);
+            }
+
+            else{
+
+                 System.out.println(""Your element "" + element + "" is not into the arraylist!"");
+           }
+        }
+
+        public static void main (String [] args){
+
+            TestSOF testSOF = new TestSOF();
+
+            testSOF.fillArray();
+            testSOF.sortArray();
+            testSOF.checkPosition(20);
+        } 
+</code></pre>
+
+<p>}</p>
+","1944117","","","","","2013-03-24 21:08:45","","","","1","","",""
+"15604032","1","15604113","","2013-03-24 21:08:45","","0","774","<p>I've written a simple program including linked lists. When I try to display the linked list in the function it is created, it works alright; however, when I return to main and try to display it, it does not work properly.</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+#include &lt;iostream&gt;
+
+#define LEN 20 
+struct Node {
+char word[LEN];
+int count;
+Node * next;
+};
+
+Node* build_linked_list (char array[][LEN], int N);
+Node* make_ordered_copy (Node * head);
+void print_list(Node * head);
+
+
+int main()
+{
+#define NUMBER 10
+char array[NUMBER][LEN]; // array which the words will be recorded
+int N=6;
+for(int a=0; a&lt;N; ++a) strcpy(array[a], ""test"");
+print_list(build_linked_list(array, N));
+getchar();
+return 0;
+}
+
+Node* build_linked_list (char array[][LEN], int N)
+{
+  Node ndArray[N];
+  Node *head, *newnode;
+
+  head = &amp;ndArray[0];
+  strcpy(head-&gt;word, array[0]); // writing the first element to the head
+  head-&gt;count = 0;
+  head-&gt;next = NULL;
+
+  for(int a=1; a&lt;N; ++a) // writing the elements in a linked list 
+  {
+    newnode = &amp;ndArray[a];
+    strcpy(newnode-&gt;word, array[a]); 
+    newnode-&gt;count = 0;
+    newnode-&gt;next = head; // first location now becomes second location
+    head = newnode;
+  }  
+
+  print_list(head);
+  printf(""Previous values were shown in build_linked_list\n"");
+
+  return head;
+}
+
+void print_list(Node* head)
+{
+ Node* traverse;
+ traverse = head;
+
+ while(traverse) // while traverse is not NULL
+ {
+   printf(""\""%s\"" with the frequency of %d\n"", traverse-&gt;word, traverse-&gt;count);
+   traverse = traverse-&gt;next;
+ }
+
+
+ return;
+}
+</code></pre>
+
+<p>When debugging in print_list function called from main, ""traverse->word"" shows the correct value at first but it does not print it right and then it changes to some another value.</p>
+","1984505","","","","","2013-03-24 21:29:37","Head of a linked list changes when passed to a function","<c><linked-list><pass-by-reference>","2","0","","",""
+"15604033","2","","15604001","2013-03-24 21:08:55","","0","","<p>Try add new DNS canonical record, like:</p>
+
+<pre><code> oldsubdomain   CNAME       newsubdomain.domain.com.
+</code></pre>
+
+<p>In your domains:</p>
+
+<pre><code>player CNAME player.vimeo.com.
+</code></pre>
+","1148579","","","","","2013-03-24 21:08:55","","","","0","","",""
+"15604034","2","","15603893","2013-03-24 21:08:57","","2","","<p>You could try something like this:</p>
+
+<pre><code>drop table if exists ids;
+
+create table ids (score int unsigned primary key)
+select distinct rpo as score from rank
+union
+select distinct rsp as score from rank
+union
+select distinct rsv as score from rank;
+
+select ids.score,
+       sum(if(rank.rpo=ids.score,1,0)) as RPO,
+       sum(if(rank.rsp=ids.score,1,0)) as RSP,
+       sum(if(rank.rsv=ids.score,1,0)) as RSV
+  from ids,round 
+left join base on round.id = base.round_id 
+left join rank on round.id = rank.round_id and rank.number = base.number
+ where base.result = 1 
+   and round.round_date between '2013-03-15' and '2013-03-22'
+   and round.gameform = 'V4'
+   and round.gameform not like ""OSPEC""
+   group by ids.score with rollup;
+</code></pre>
+
+<p>If you don't want to create a temp table, you could try:</p>
+
+<pre><code>select ids.score,
+       sum(if(rank.rpo=ids.score,1,0)) as RPO,
+       sum(if(rank.rsp=ids.score,1,0)) as RSP,
+       sum(if(rank.rsv=ids.score,1,0)) as RSV
+  from 
+  (
+      select distinct rpo as score from rank
+      union
+      select distinct rsp as score from rank
+      union
+      select distinct rsv as score from rank
+  ) ids, round 
+left join base on round.id = base.round_id 
+left join rank on round.id = rank.round_id and rank.number = base.number
+ where base.result = 1 
+   and round.round_date between '2013-03-15' and '2013-03-22'
+   and round.gameform = 'V4'
+   and round.gameform not like ""OSPEC""
+group by ids.score with rollup;
+</code></pre>
+
+<p>See <a href=""http://sqlfiddle.com/#!2/9b7d7/6"" rel=""nofollow"">http://sqlfiddle.com/#!2/9b7d7/6</a> for a working example.</p>
+","1432614","","1432614","","2013-03-25 22:31:45","2013-03-25 22:31:45","","","","4","","",""
+"15604035","2","","15603997","2013-03-24 21:09:08","","1","","<p>Or like this:</p>
+
+<pre><code>function fwc(a, b, callback) {
+    dosomestuff(a,b);
+    callback &amp;&amp; callback();
+}
+</code></pre>
+
+<p>You can also check for <code>callback</code> type to make sure it's a function. If so check Travis's general answer.</p>
+","949476","","","","","2013-03-24 21:09:08","","","","0","","",""
+"15604036","1","","","2013-03-24 21:09:10","","0","149","<p>My php script is supposed to download a .zip file, and increment a counter.
+In the code below, the parameters passed in on the URL are not being recognized, so the  line to download a file doesn't do anything, and if the file download doesn't work, the count loops endlessly, incrementing the count. My provider is using PHP V5.2.</p>
+
+<p>I'd like for the passed parms to work, but I can live with hardcoding ""myapp.zip"" in the  tag.</p>
+
+<p>I need to return to the page that called count.php after it's work is done.</p>
+
+<pre><code>&lt;!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd""&gt;
+&lt;?php
+//$Down=$_GET['Down'];
+$Down=$_Post['Down'];
+echo ""File:"" . $Down;?&gt;
+&lt;html xmlns=""http://www.w3.org/1999/xhtml""&gt;
+&lt;head&gt;
+
+  &lt;meta content=""en-us"" http-equiv=""Content-Language"" /&gt;
+  &lt;meta content=""text/html; charset=utf-8"" http-equiv=""Content-Type"" /&gt;
+  &lt;!--meta http-equiv=""refresh"" content=""0;url=&lt;?php echo $Down;?&gt;""/--&gt;
+  &lt;meta http-equiv=""refresh"" content=""0;url=MyApp.zip""/&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;?php
+   $filePath = 'count.txt';
+   // If file exists, read current count from it, otherwise, initialize it to 0
+   $count = file_exists($filePath) ? file_get_contents($filePath) : 0;
+   // Increment the count and overwrite the file, writing the new value&lt;br /&gt;
+   file_put_contents($filePath, ++$count);
+   // Display current download count
+   //echo ""Downloads:"" . $count;
+   //header(""Location: $r.htm"");
+?&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>It's called from r.htm like this: </p>
+
+<pre><code>&lt;form method=""post"" action=""count.php?Down=myapp.zip"" style=""text-align: center""&gt;
+&lt;input type=""submit"" value=""Download MyApp""&gt;
+&lt;/form&gt;
+</code></pre>
+","991397","","","","","2013-03-25 11:26:47","PHP url params and return to calling page","<php>","2","6","","",""
+"15604037","2","","15603977","2013-03-24 21:09:12","","2","","<p>Try:</p>
+
+<pre><code>import java.awt.Desktop;
+// ...
+Desktop.getDesktop().browse(svgFile.toURI());
+</code></pre>
+
+<p>or</p>
+
+<pre><code>import java.awt.Destktop;
+// ...
+Desktop.getDesktop().open(svgFile);
+</code></pre>
+","201906","","","","","2013-03-24 21:09:12","","","","0","","",""
+"15604038","2","","15603952","2013-03-24 21:09:13","","5","","<p>You can check instance of <code>Traversable</code> with a simple function. This would work for all this of <code>Iterator</code> because <code>Iterator extends Traversable</code></p>
+
+<pre><code>function canLoop($mixed) {
+    return is_array($mixed) || $mixed instanceof Traversable ? true : false;
+}
+</code></pre>
+","1226894","","","","","2013-03-24 21:09:13","","","","0","","",""
+"15604039","2","","15603951","2013-03-24 21:09:14","","6","","<p>There are several ways of handling errors of this kind in Objective C:</p>
+
+<ul>
+<li><strong>Returning the default value</strong> - typically, the default value is <code>nil</code>. Since performing operations on <code>nil</code> objects is allowed in Objective C, this is relatively safe.</li>
+<li><strong>Producing <code>NSError</code> objects</strong> - this is more typical of errors that can be addressed by end users, such as connection and configuration problems. The unfortunate side effect of this kind of API is the need to set up and pass an extra parameter.</li>
+<li><strong>Using an assertion</strong> - this is a good way of handling ""programming errors"", i.e. when your program's arguments are out of their specified ranges.</li>
+<li><strong>Throwing an exception</strong> - this option is available in the language, but Apple strongly discourages against using it. I mentioned it here for completeness, even though I never use this option myself.</li>
+</ul>
+","335858","","","","","2013-03-24 21:09:14","","","","2","","",""
+"15604040","1","15604241","","2013-03-24 21:09:19","","0","188","<p>I have a list that contains near-duplicate elements, with the exception of a number that identifies the element. I want to remove all duplicates while preserving the number of the first element containing a duplicate. </p>
+
+<p>For example, I want to replace <code>l</code> with <code>lnew</code>:</p>
+
+<pre><code>l = ['iter1apple','iter2banana','iter3carrot','iter4apple','iter5orange','iter6banana','iter7mango']
+
+lnew = ['iter1apple','iter2banana','iter3carrot','iter5orange','iter7mango']
+</code></pre>
+
+<p>I'm guessing this has something to do with splitting the number from the rest of the list element, converting the list to set and using <code>defaultdict</code> with the elements from the split, but I can't figure out how.</p>
+
+<p>Any suggestions would be appreciated. </p>
+","1185790","","","","","2013-03-24 21:30:09","Remove near-duplicate elements in Python list while preserving variables","<python><list>","1","2","","",""
+"15604041","2","","15604024","2013-03-24 21:09:22","","0","","<p>It's in <code>/etc/hosts</code>. It's a default entry, and <code>gethostbyname()</code> also looks there.</p>
+","1070354","","","","","2013-03-24 21:09:22","","","","0","","",""
+"15604042","2","","15599458","2013-03-24 21:09:30","","3","","<p>This looks like you are using a broken theme which has css classes present in the css files that are not declared in the java interfaces.</p>
+
+<p>If you want to get started with mgwt styling you can easily clone the themebase project and start from there:</p>
+
+<p><a href=""https://code.google.com/p/mgwt/source/checkout?repo=themebase"" rel=""nofollow"">https://code.google.com/p/mgwt/source/checkout?repo=themebase</a></p>
+","201251","","","","","2013-03-24 21:09:30","","","","0","","",""
+"15604043","1","15604146","","2013-03-24 21:09:38","","0","95","<p>The purpose of <code>version_from_path(path)</code> is to return the version number of a Python installation, given the absolute path to the default named and targeted root directory of that installation on a Windows system (e.g <code>'C:\PythonXX'</code>).</p>
+
+<pre><code>def version_from_path(path):
+    return ""%s.%s"" % (path[-2:-1], path[-1:])
+</code></pre>
+
+<p>As an example...</p>
+
+<pre><code>print(version_from_path('C:\Python27'))
+print(version_from_path('C:\Python32'))
+print(version_from_path('C:\Python33'))
+</code></pre>
+
+<p>...produces...</p>
+
+<pre><code>2.7
+3.2
+3.3
+</code></pre>
+
+<p>I'm currently using slice notation and a formatting operation to achieve the required results, however I would be interested to see how the same functionality is achieved using a regular expression.</p>
+
+<p>Thanks for your help.</p>
+","","user2177826","","","","2013-03-25 10:54:50","Reimplementing function using regular expression","<python><regex><windows><algorithm>","4","9","","",""
+"15604045","2","","15604024","2013-03-24 21:09:40","","3","","<p>That's what your <code>/etc/hosts</code> indicates. It most likely has something like:</p>
+
+<pre><code>127.0.0.1       localhost
+127.0.1.1       user-desktop
+</code></pre>
+","714501","","","","","2013-03-24 21:09:40","","","","1","","",""
+"15604046","2","","15517789","2013-03-24 21:09:57","","0","","<p>You need to crossjoin the employee dimension with the date you are interested in.  </p>
+
+<p>The following will give you just the value;</p>
+
+<pre><code>SELECT { [Measures].[Reseller Sales Amount] } ON COLUMNS
+FROM [Adventure Works]
+WHERE ({ [Employee].[Employee Department].[Employee].[Jae B. Pak]},
+         {[Date].[Date].&amp;[20070901] }) 
+</code></pre>
+
+<p>The where clause in MDX is a slicer which behaves differently from the SQL where clause (worth reading about).  The following cross join on rows would provide the same result without using the slicer, but will include the dimension attributes within the result.</p>
+
+<pre><code>SELECT { [Measures].[Reseller Sales Amount] } ON COLUMNS,
+CROSSJOIN({ [Employee].[Employee Department].[Employee].[Jae B. Pak]}, {[Date].[Date].&amp;[20070901] }) ON Rows
+FROM [Adventure Works]
+</code></pre>
+
+<p>and finally, if you want to return based on a 'SQL Like', you can use instr (the following gives all employees where the name include ja)</p>
+
+<pre><code>SELECT [Measures].[Reseller Sales Amount] ON COLUMNS,
+{FILTER([Employee].[Employees].allmembers,
+instr([Employee].[Employees].currentmember.member_caption,'Ja')&gt;0) *  [Date].[Date].&amp;[20070901]} ON ROWS
+FROM [Adventure Works] 
+</code></pre>
+
+<p>hopefully that will get you going</p>
+","356506","","356506","","2013-03-26 14:10:23","2013-03-26 14:10:23","","","","0","","",""
+"15604047","2","","15603877","2013-03-24 21:10:04","","0","","<p>An edited version of this one: <a href=""http://css3.bradshawenterprises.com/flip/"" rel=""nofollow"">http://css3.bradshawenterprises.com/flip/</a>:</p>
+
+<p>JSfiddle: <a href=""http://jsfiddle.net/PnUHr/1/"" rel=""nofollow"">http://jsfiddle.net/PnUHr/1/</a></p>
+
+<p><strong>CSS</strong></p>
+
+<pre><code>#f1_container {
+    position: relative;
+    margin: 10px auto;
+    width: 450px;
+    height: 281px;
+    z-index: 1;
+}
+#f1_container {
+    -webkit-perspective: 1000;
+    perspective: 1000;
+}
+#f1_card {
+    width: 100%;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition: all 1.0s linear;
+    transform-style: preserve-3d;
+    transition: all 1.0s linear;
+}
+#f1_container:hover #f1_card {
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    box-shadow: -5px 5px 5px #aaa;
+}
+.face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+}
+.face.back {
+    display: block;
+    -webkit-transform: rotateY(180deg);
+    transform: rotateY(180deg);
+    box-sizing: border-box;
+    color: white;
+    text-align: center;
+    background-color: #aaa;
+}
+</code></pre>
+
+<p><strong>HTML</strong></p>
+
+<pre><code>&lt;div id=""f1_container""&gt;
+    &lt;div id=""f1_card"" class=""shadow""&gt;
+        &lt;div class=""front face""&gt;
+            &lt;img src=""Cirques.jpg""/&gt;
+        &lt;/div&gt;
+        &lt;div class=""back face center""&gt;
+            &lt;img src=""Cirques.jpg"" style=""transform:scaleX(-1), transform:scaleY(-1)""/&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>All credits go to the original created (see link). I've just removed the padding that was on the back-facing <code>&lt;div&gt;</code> and added a mirrored background of the front-facing image.</p>
+
+<p>For Mozilla/Gecko browsers you need to add the <code>-moz-*</code> prefixes too. Same for Opera (<code>-o-*) and Internet Explorer (</code>-ms-*`).</p>
+
+<p>Direct image link: <a href=""http://css3.bradshawenterprises.com/images/Cirques.jpg"" rel=""nofollow"">http://css3.bradshawenterprises.com/images/Cirques.jpg</a></p>
+","","user1467267","","","","2013-03-24 21:10:04","","","","0","","",""
+"15604049","1","15604060","","2013-03-24 21:10:12","","1","49","<p>let's say I have two divs like this:</p>
+
+<pre><code>&lt;div class=""myDiv""&gt;
+    &lt;textarea class=""info_box"" attribute=""first"" rows=""4"" cols=""40""&gt;Enter text here...&lt;/textarea&gt;
+    &lt;button class=""submit_btn""&gt;Click me!&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;div class=""myDiv""&gt;
+    &lt;textarea class=""info_box"" attribute=""second"" rows=""4"" cols=""40""&gt;Enter text here...&lt;/textarea&gt;
+    &lt;button class=""submit_btn""&gt;Click me!&lt;/button&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>I want to be able to get the textarea within each div when I click on my button 'submit_btn'. I tried something like this:</p>
+
+<pre><code>$('body').delegate('.myDiv .submit_btn', 'click', function(){
+    var myTextarea = $('.info_box', this);
+});
+</code></pre>
+
+<p>But that returns undefined</p>
+
+<p>Any help please</p>
+","765368","","","","","2013-03-24 21:16:45","jquery this context","<javascript><jquery>","3","0","0","",""
+"15604050","1","15604125","","2013-03-24 21:10:13","","1","66","<p>I am having some weird issues with a pattern replace.</p>
+
+<p>I have these two patterns:</p>
+
+<pre><code>private static final Pattern CODE_ANY = Pattern.compile(""&amp;[0-9a-fk-or]"");
+private static final Pattern CODE_BLACK = Pattern.compile(ChatColour.BLACK.toString());
+</code></pre>
+
+<p>ChatColour.BLACK.toString() returns ""&amp;0""</p>
+
+<p>Next, I have this code:</p>
+
+<pre><code>public static String Strip(String message)
+{
+    while (true)
+    {
+        Matcher matcher = CODE_ANY.matcher(message);
+        if (!matcher.matches())
+            break;
+        message = matcher.replaceAll("""");
+    }
+    return message;
+}
+</code></pre>
+
+<p>I have tried a couple different approaches, but nothing gets replaced.
+The initial version just called each CODE_xxx pattern one after the other, but users were bypassing that by doubling up on ampersands.</p>
+
+<p>I just do not understand why this isn't removing anything..
+I know it is definitely getting called, as I have printed debug messages to the console to check that.</p>
+
+<p>// Morten</p>
+","1033708","","","","","2013-03-24 21:30:09","Unable to get Matcher.replaceAll to work properly","<java><regex>","1","6","","",""
+"15604051","2","","15603575","2013-03-24 21:10:15","","2","","<ol>
+<li><p>Drag the folder to Xcode. Make sure it is either in the right place or that you also copy it.</p></li>
+<li><p>Select the files in the project browser and choose ""File->Source Control->Add"". Alternatively, hit <kbd>alt</kbd><kbd>cmd</kbd><kbd>A</kbd>. </p></li>
+</ol>
+
+<p>Alternatively, go to your directory in Terminal and type</p>
+
+<pre><code>   git add NewFolder
+</code></pre>
+","427083","","","","","2013-03-24 21:10:15","","","","2","","",""
+"15604052","1","15604308","","2013-03-24 21:10:24","","0","132","<p>Im at my wits end here, please assist me you beautiful people!!</p>
+
+<p>My conundrum is this:</p>
+
+<p>I have a list of 100 drugs. Each has a name, each has a URL associated with it, and each is in a section from 1-8. I need to create a list of the drug names in a table view. When a specific drug is selected, the drug name, its section and its URL need to be passed to another view controller.</p>
+
+<p>I know how to implement all the gubbins to pass to another controller, set up table views etc I just dont know how to organise the data in a plist file so it can be accessible within the program and how to keep each drug linked to its URL and section. </p>
+
+<p>Any ideas? ive been messing around with dictionaries, arrays and objects for the best past of 7 hours now. I think I might cry if I dont sort it soon!</p>
+
+<p>Thanks alot,</p>
+
+<p>Lucy</p>
+","2204843","","","","","2013-03-24 21:48:40","Organising data in a Plist correctly","<xcode><dictionary><plist>","1","2","","",""
+"15604053","2","","15603598","2013-03-24 21:10:32","","1","","<p>I personally find it easier to manage the <code>access_token</code> myself. Facebook's Graph API secures protected endpoints by requiring that an <code>access_token</code> be passed in. The PHP SDK abstracts this away, but I have never been comfortable with Facebook handling the information because sometimes <em>it just doesn't work</em>. This isn't to say that the library is bad, but only that <strong>I haven't been using it correctly</strong>. Keep this caveat in mind.</p>
+
+<p>It looks like you're working with a Facebook Canvas App. When the user successfully authenticates for the first time, Facebook will send an <code>access_token</code> in <code>$_GET</code>. At this point, you <em>should</em> save this to your database, since that access token is good for 3 months or so.</p>
+
+<p>At the point, from then on, you can pass in the <code>access_token</code> in the call parameters:</p>
+
+<pre><code>try {
+    $user_profile = $facebook-&gt;api('/me', 'POST', array(
+        ""access_token"" =&gt; ''    // access token goes here
+    ));
+} catch (FacebookApiException $e) {
+    // error handling
+}
+</code></pre>
+
+<p>Given that Facebook is returning the error that you need an access token in order to call the <code>/me</code> resource, it looks like <code>$facebook-&gt;getUser();</code> is returning something. You may want to double-check what it is.</p>
+
+<hr>
+
+<p>While I'm here, you're using this logic:</p>
+
+<pre><code>if (!conditional) {
+    // do something
+}
+if (conditional) {
+    // do something else
+}
+</code></pre>
+
+<p>Confusing. Use <code>else</code>:</p>
+
+<pre><code>if (conditional) {
+    // do something
+} else {
+    // do something else
+}
+</code></pre>
+","122353","","","","","2013-03-24 21:10:32","","","","0","","",""
+"15604054","2","","15603097","2013-03-24 21:10:41","","0","","<p>Disclaimer: I don't know anything about the public_activity gem, but here's what the documentation suggests you need to do:</p>
+
+<ol>
+<li><p><a href=""https://github.com/pokonski/public_activity/wiki/%5BHow-to%5D-Set-the-Activity%27s-owner-to-current_user-by-default"" rel=""nofollow"">Set the ""owner"" attribute on your activities.</a></p></li>
+<li><p>Filter the activities you display: <code>PublicActivity::Activity.where(owner_type: ""User"", owner_id: current_user.followed_users.map {|u| u.id}).all</code> (This is based on <a href=""https://github.com/pokonski/activity_blog/blob/master/app/controllers/activities_controller.rb#L14"" rel=""nofollow"">this sample code.</a>)</p></li>
+</ol>
+","783493","","","","","2013-03-24 21:10:41","","","","2","","",""
+"15604055","1","15631709","","2013-03-24 21:10:47","","6","9470","<p>I'm trying install LXC (0.7.4.1) on my Debian 6 but when I run the lxc-checkconfig I get ""Cgroup memory controller: missing""</p>
+
+<pre><code>root@lxcsrv01:~# lxc-checkconfig
+Kernel config /proc/config.gz not found, looking in other places...
+Found kernel config file /boot/config-2.6.32-5-686
+--- Namespaces ---
+Namespaces: enabled
+Utsname namespace: enabled
+Ipc namespace: enabled
+Pid namespace: enabled
+User namespace: enabled
+Network namespace: enabled
+Multiple /dev/pts instances: enabled
+
+--- Control groups ---
+Cgroup: enabled
+Cgroup namespace: enabled
+Cgroup device: enabled
+Cgroup sched: enabled
+Cgroup cpu account: enabled
+Cgroup memory controller: missing
+Cgroup cpuset: enabled
+
+--- Misc ---
+Veth pair device: enabled
+Macvlan: enabled
+Vlan: enabled
+File capabilities: enabled
+enabled
+
+Note : Before booting a new kernel, you can check its configuration
+usage : CONFIG=/path/to/config /usr/bin/lxc-checkconfig
+</code></pre>
+
+<p>According google search I need to recompile my kernel but I don't know how.
+Someone can explain me how to do this?</p>
+
+<p>Best regards</p>
+","2059196","","2775207","","2014-05-09 19:23:31","2015-08-22 13:46:16","LXC - Cgroup memory controller: missing","<linux><kernel><debian><lxc>","3","0","2","",""
+"15604056","1","15605240","","2013-03-24 21:10:52","","0","432","<p>I googled but could only find answers for the max amount of articles.</p>
+
+<p><strong>Question: short Version:</strong></p>
+
+<p>How many possible categories (with subcategories) can Joomla 2.5 handle on a shared host. Which problems do I have to expect?</p>
+
+<p><strong>Question: long Version:</strong></p>
+
+<p>I m building an website for architects. The content structure looks like this</p>
+
+<pre><code>HOUSES
+    Architect A
+      Project 1
+      Project 2
+      ...
+
+    Architect B
+      Project 1
+      Project 2
+      ...
+
+Places
+    Architect C
+      Project 1
+      Project 2
+      ...
+
+    Architect D
+      Project 1
+      Project 2
+      ...
+</code></pre>
+
+<p>And so on. The most obvious would be to have HOUSES  and PLACES as Categories. Architect A, Architect B ... as subcategories and the Projects as articles. This would on the one hand keep the ability to use Joomlas Blog View etc. and not use third party CCK extensions but on the other hand this would probably cause 300 and more categories.</p>
+
+<p>Thanks for your always great input,</p>
+
+<p>Tony </p>
+","1474777","","","","","2013-07-20 20:00:43","Joomla 2.5 How many possible categories","<joomla><categories><max>","3","0","","",""
+"15604057","2","","15603952","2013-03-24 21:11:03","","44","","<p>If you are using <code>foreach</code> inside a function and you are expecting an array or a <a href=""http://php.net/manual/en/class.traversable.php"" rel=""noreferrer"">Traversable</a> object you can type hint that function with: </p>
+
+<pre><code>function myFunction(array $a)
+function myFunction(Traversable)
+</code></pre>
+
+<p>If you are not using <code>foreach</code> inside a function or you are expecting both <a href=""http://www.php.net/manual/en/class.traversable.php#99195"" rel=""noreferrer"">you can simply use this construct</a> to check if you can iterate over the variable:</p>
+
+<pre><code>if (is_array($a) or ($a instanceof Traversable))
+</code></pre>
+","493122","","493122","","2015-10-30 16:50:15","2015-10-30 16:50:15","","","","5","","",""
+"15604058","1","","","2013-03-24 21:11:06","","11","13979","<p>The command <code>rails server</code> throws this error.</p>
+
+<pre><code>C:/Ruby200/lib/ruby/gems/2.0.0/gems/mysql2-0.3.11-x86-mingw32/lib/mysql2/mysql2.rb:2:in `require': cannot load
+ such file -- mysql2/2.0/mysql2 (LoadError)
+</code></pre>
+
+<p>I use <strong>Ruby 2.0.0</strong> from <a href=""http://rubyinstaller.org/"" rel=""nofollow noreferrer"">RubyInstaller</a> on Windows XP box.</p>
+
+<p>I figured out what is the problem but I don't know how to solve it. The problem is that there is no any <code>2.0/</code> directory in the <code>mysql2-0.3.11-x86-mingw32</code> gem. This is the gem that <code>rails</code> installs as its dependency from <strong>Gemfile</strong>:</p>
+
+<pre><code>GEM
+  remote: https://rubygems.org/
+  specs:
+     ... many gems here
+     mysql2 (0.3.11-x86-mingw32)
+     ... many gems here
+DEPENDENCIES
+  ...
+  mysql2
+  ...
+</code></pre>
+
+<p>This is what is in that <code>mysql2.rb</code> file:</p>
+
+<pre><code># C:\Ruby200\lib\ruby\gems\2.0.0\gems\mysql2-0.3.11-x86-mingw32\lib\mysql2\mysql2.rb
+
+RUBY_VERSION =~ /(\d+.\d+)/
+require ""mysql2/#{$1}/mysql2""  # &lt;&lt;-- this is that #2 line that throws an error
+</code></pre>
+
+<p>It is obvious that it takes the current Ruby version number and uses it as the path segment to reach some <code>mysql2</code> file. In fact it is <code>mysql2.so</code> file. As I use <strong>Ruby 2.0.0</strong> the path segment is <code>2.0</code>:</p>
+
+<pre><code>mysql2/2.0/mysql2
+</code></pre>
+
+<p>Ok, now lets see how that directory of <code>mysql2-0.3.11-x86-mingw32</code> gem looks like:</p>
+
+<pre><code>dir: C:\Ruby200\lib\ruby\gems\2.0.0\gems\mysql2-0.3.11-x86-mingw32\lib\mysql2\
+</code></pre>
+
+<p><img src=""https://i.stack.imgur.com/k0Ps8.jpg"" alt=""enter image description here""></p>
+
+<p>No any <code>2.0/</code> directory.</p>
+
+<p>I know the issue about <strong>libmysql.dll</strong>. I have it in my <code>C:\Ruby200\bin</code>. It doesn't help.</p>
+
+<p>I read this answer <a href=""https://stackoverflow.com/a/5368767/1114926"">https://stackoverflow.com/a/5368767/1114926</a> from the creator of RubyInstaller. I tried but it didn't help. It works for <code>Ruby 1.9.3</code> because there is <code>1.9/</code> directory. But it doesn't work for <code>Ruby 2.0.0</code>.</p>
+
+<p>How to solve it?</p>
+
+<hr>
+
+<p><strong>UPD 1:</strong></p>
+
+<p>Thank you for your <a href=""https://stackoverflow.com/a/15613521/1114926"">answer</a>. I've tried. Unfortunately I have <code>ERROR: Failed to build gem native extension.</code> error:</p>
+
+<pre><code>C:\&gt;gem install mysql2 --platform=ruby
+Temporarily enhancing PATH to include DevKit...
+Building native extensions.  This could take a while...
+ERROR:  Error installing mysql2:
+        ERROR: Failed to build gem native extension.
+
+    C:/Ruby200/bin/ruby.exe extconf.rb
+checking for rb_thread_blocking_region()... *** extconf.rb failed ***
+Could not create Makefile due to some reason, probably lack of necessary
+libraries and/or headers.  Check the mkmf.log file for more details.  You may
+need configuration options.
+
+Provided configuration options:
+        --with-opt-dir
+        --without-opt-dir
+        --with-opt-include
+        --without-opt-include=${opt-dir}/include
+        --with-opt-lib
+        --without-opt-lib=${opt-dir}/lib
+        --with-make-prog
+        --without-make-prog
+        --srcdir=.
+        --curdir
+        --ruby=C:/Ruby200/bin/ruby
+C:/Ruby200/lib/ruby/2.0.0/mkmf.rb:431:in `try_do': The compiler failed to generate an executable file. (Runtim
+eError)
+You have to install development tools first.
+... other code follows here...
+</code></pre>
+
+<p>It says:</p>
+
+<blockquote>
+  <p>You have to install development tools first. </p>
+</blockquote>
+
+<p>But I have full DevKit installed, RubyInstaller installs it. Can't understand what else does it need.</p>
+
+<p>I've already posted an issue to <code>mysql2</code> GitHub page <a href=""https://github.com/brianmario/mysql2/issues/364"" rel=""nofollow noreferrer"">https://github.com/brianmario/mysql2/issues/364</a>. No answers yet.</p>
+","1114926","","-1","","2017-05-23 11:53:25","2015-03-20 09:16:40","Error ""...cannot load such file -- mysql2/2.0/mysql2 (LoadError)"". On Windows XP with Ruby 2.0.0","<ruby-on-rails-3><mysql2><ruby-2.0>","5","0","3","",""
+"15604059","1","","","2013-03-24 21:11:09","","1","1057","<p>I am trying to modify the source code to an open source application on windows that uses mingw.</p>
+
+<p>I am having a problem linking the psapi library.</p>
+
+<p>psapi.h and libpsapi.a are in the mingw directory and I have tested it using the standard</p>
+
+<p><code>gcc -o program program.c -lpsapi</code></p>
+
+<p>method, and it works.</p>
+
+<p>However, when I try to compile the program using the</p>
+
+<pre><code>./configure
+make
+</code></pre>
+
+<p>method, it doesn't work I have tried,</p>
+
+<pre><code>./configure LDFLAGS=-lpsapi
+make
+</code></pre>
+
+<p>and that doesn't work</p>
+
+<p>and I tried going into the makefile.am and putting -lpsapi in AM_LDFLAGS but that doesn't work</p>
+
+<p>The error it gives is just a standard ""undefined reference to [function]"", implying that the library with the functions is not linked</p>
+
+<p>I have even tried putting psapi.h in the source directory and including it as <code>#include ""psapi.h""</code> and that STILL didn't work.</p>
+","2205493","","","","","2013-03-25 11:20:24","Can't Link Psapi.h in Open Source Project Using MinGW","<c><linker><makefile><mingw><configure>","1","0","","",""
+"15604060","2","","15604049","2013-03-24 21:11:35","","2","","<p>You can do this :</p>
+
+<pre><code>$('body').delegate('.myDiv .submit_btn', 'click', function(){
+    var myTextarea = $(this).closest('myDiv').find('.info_box');
+});
+</code></pre>
+
+<p>Another solution :</p>
+
+<pre><code>$('body').delegate('.myDiv .submit_btn', 'click', function(){
+    var myTextarea = $(this).siblings('.info_box');
+});
+</code></pre>
+
+<p>Note that if you have a version of jQuery more recent than 1.7, it's better to use <code>on</code> instead of <code>delegate</code>.</p>
+","263525","","","","","2013-03-24 21:11:35","","","","0","","",""
+"15604062","2","","15603983","2013-03-24 21:11:55","","1","","<p>It's best to <a href=""http://en.wikipedia.org/wiki/Unobtrusive_JavaScript"" rel=""nofollow"">separate behavior from markup</a>. You can solve both problems using an HTML <code>data-</code> attribute.</p>
+
+<p>First embed the data in the HTML:</p>
+
+<pre><code>&lt;input id=""SubmitCommentsForBOQ"" type=""button"" value=""Comments""
+    data-item-code=""&lt;%: item.ItemCode %&gt;"" /&gt;
+</code></pre>
+
+<p>Instead of <code>onclick</code>, bind the event handler using jQuery only, and perform all the actions you need at once:</p>
+
+<pre><code>$(""#SubmitCommentsForBOQ"").click(function () {
+    var itemCode = $(this).data('itemCode');
+    ShowCommentBox(itemCode);
+});
+
+$(""#SubmitCommentsForTwo"").click(function () {
+    $(""#hiddenBox"").show();
+    var itemCode = $(this).data('itemCode');
+    ShowCommentBox(itemCode);
+});
+</code></pre>
+
+<p>Multiple handlers will execute in the order in which they are bound, so you could also do something like this:</p>
+
+<pre><code>// happens first, but only for this specific button
+$(""#SubmitCommentsForTwo"").click(function () {
+    $(""#hiddenBox"").show();
+});
+
+// happens for all buttons
+$(""input[data-item-code]"").click(function () {
+    var itemCode = $(this).data('itemCode');
+    ShowCommentBox(itemCode);
+});
+</code></pre>
+","687315","","","","","2013-03-24 21:11:55","","","","0","","",""
+"15604063","2","","15603881","2013-03-24 21:11:58","","1","","<p>You can see your changelists using <code>svn status</code>.  If you just want the names, grep for the lines beginning <code>--- Changelist</code>, e.g.:</p>
+
+<pre><code>svn status | grep ""^\-\-\- Changelist""
+</code></pre>
+","469210","","","","","2013-03-24 21:11:58","","","","0","","",""
+"15604064","2","","15604049","2013-03-24 21:12:00","","1","","<p>That is because <code>this</code> is scoped to <code>.myDiv .submit_btn</code> and inside of there, the textarea does not exist. Perhaps try <code>this.parentNode</code> as the scope.</p>
+","1026459","","","","","2013-03-24 21:12:00","","","","0","","",""
+"15604065","2","","15603957","2013-03-24 21:12:03","","3","","<p>You could simply set your purple to all elements, and then remove it from the 3 unwanted ones:</p>
+
+<pre><code>element { background: purple }
+element:first-child, element:nth-child(2), element:last-child, element:nth-last-child(2) {
+   background: none; /* or whatever you want as background for those */
+}
+</code></pre>
+
+<p>Thats imho much easier to read</p>
+","2193252","","2193252","","2013-03-24 21:22:03","2013-03-24 21:22:03","","","","2","","",""
+"15604066","1","","","2013-03-24 21:12:08","","1","6348","<p>In short words, what I try to accomplish:</p>
+
+<ul>
+<li>single InfoWindow on map, because of many markers</li>
+<li>InfoWindow content attached to marker</li>
+<li>InfoWindow opens on marker click => content from attached attribute</li>
+<li>InfoWindow contains 2 buttons => set <em>start</em>, set <em>target</em></li>
+<li>if <em>start</em> and <em>target</em> are set, calculate route</li>
+</ul>
+
+<p>I tried a lot and it's quite difficult to attach a handler to a button inside an InfoWindow. The best hint I found was this one: <a href=""https://stackoverflow.com/questions/6378007/adding-event-to-element-inside-google-maps-api-infowindow"">Adding event to element inside Google Maps API InfoWindow</a></p>
+
+<p>I tried this so far:</p>
+
+<pre><code>&lt;script&gt;
+function initialize() {
+    var mapOptions = {
+        center: new google.maps.LatLng(50.903033, 11.359863),
+        zoom: 6,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        disableDefaultUI: true,
+        zoomControl: true,
+        scaleControl: true,
+        overviewMapControl: true
+    };
+    var map = new google.maps.Map(document.getElementById('limousine-map'),
+        mapOptions);
+    var directionsService = new google.maps.DirectionsService();
+    var directionDisplay = new google.maps.DirectionsRenderer();
+    directionDisplay.setMap(map);
+    directionDisplay.setPanel(document.getElementById('route-details'));
+    var infoWindow = new google.maps.InfoWindow();
+    var endPoint = false;
+    var startPoint = false;
+
+
+var marker = new google.maps.Marker({
+    map: map,
+    position: new google.maps.LatLng(50.903033, 11.359863),
+    title: 'Test1'
+});
+marker.infoWindowContent = [
+    '&lt;div id=""infoWindow""&gt;&lt;strong&gt;Test&lt;/strong&gt;',
+    '&lt;button class=""button"" id=""selectStart""&gt;Start&lt;/button&gt;'+
+    '&lt;button class=""button"" id=""selectTarget"" style=""float: right;""&gt;Target&lt;/button&gt;&lt;/div&gt;'
+].join('&lt;br&gt;');
+
+google.maps.event.addListener(marker,'click',function(){
+    infoWindow.close();
+    infoWindow = new google.maps.InfoWindow({
+        content: this.infoWindowContent
+    });
+    infoWindow.open(map,this);
+    clickedLocation = this;
+    google.maps.event.addListener(infoWindow, 'domready', function() {
+        $('#infoWindow button').on('click',function(){
+            console.log(clickedLocation);
+            if($(this).attr('id') == 'selectStart'){
+                startPoint = clickedLocation;
+            }
+            if($(this).attr('id') == 'selectTarget'){
+                endPoint = clickedLocation;
+            }
+            recalcRoute();
+        });
+    });
+});
+
+var marker2 = new google.maps.Marker({
+    map: map,
+    position: new google.maps.LatLng(52.903033, 12.359863),
+    title: 'Test2'
+});
+marker2.infoWindowContent = [
+    '&lt;div id=""infoWindow""&gt;&lt;strong&gt;Test2&lt;/strong&gt;',
+    '&lt;button class=""button"" id=""selectStart""&gt;Start&lt;/button&gt;'+
+            '&lt;button class=""button"" id=""selectTarget"" style=""float: right;""&gt;Target&lt;/button&gt;&lt;/div&gt;'
+].join('&lt;br&gt;');
+
+google.maps.event.addListener(marker2,'click',function(){
+    infoWindow.close();
+    infoWindow = new google.maps.InfoWindow({
+        content: this.infoWindowContent
+    });
+    infoWindow.open(map,this);
+    clickedLocation = this;
+});
+
+
+
+//Route painting
+function recalcRoute(){
+    if(startPoint != false &amp;&amp; endPoint != false){
+        var request = {
+            origin: startPoint,
+            destination: endPoint,
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC
+        };
+        directionsService.route(request, function(response, status){
+            if(status == google.maps.DirectionsStatus.OK){
+                $('#route-details').parent().fadeIn();
+                directionDisplay.setDirections(response);
+            }
+        });
+    }else{
+        directionDisplay.setDirections(null);
+    }
+}
+
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+&lt;/script&gt;
+</code></pre>
+
+<p>I got the handler working, but then the route calculation doesn't work. I get an error like </p>
+
+<pre><code>Uncaught Error: Invalid value for property &lt;origin&gt;: [object Object] 
+thrown at line: directionsService.route(request, function(response, status){
+</code></pre>
+
+<p>How can I bind an event to the buttons inside the InfoWindow and still call recalcRoute?
+I also tried to set <code>onclick</code> on the buttons, but the reference to recalcRoute is unknown.</p>
+
+<p>Why is <code>$('#infoWindow button').on('click',function(){ console.log('test'); });</code> not working?</p>
+","1389257","","-1","","2017-05-23 11:43:27","2013-03-25 01:31:58","Google Maps v3 handle click on elements inside InfoWindow","<jquery><google-maps><events><google-maps-api-3>","2","1","","",""
+"15604067","2","","15603424","2013-03-24 21:12:08","","2","","<p>You can only bind to a port once from your program (unless you set a specific socket option, <code>SO_REUSEADDRESS</code>, but ignore that for now). As it is currently, you are attempting to bind a process to the same port three times - once in your for loop, and one time each for the two threads you start up. I'm not entirely sure why you are starting up three server processes, but you will want to revisit your design and make sure you are only binding the server port once.</p>
+
+<hr>
+
+<p><em><strong>Edit</em></strong>:</p>
+
+<p>What I would do is remove the try/catch logic from the main method, and spawn just <strong><em>one</em></strong> thread:</p>
+
+<pre><code>public static void main(String[] args) {
+    My_Thread t1 = new My_Thread();
+    t1.start();
+}
+</code></pre>
+","680925","","680925","","2013-03-24 21:39:15","2013-03-24 21:39:15","","","","5","","",""
+"15604068","2","","15603114","2013-03-24 21:12:09","","4","","<p>My understanding is that <code>pmap</code> uses multiple cores and <code>map</code> uses the current thread only. (There would be no point in having both functions in the library if both used all available cores.)</p>
+
+<p>The following simple experiment shows that <code>pmap</code> uses separate threads and <code>map</code> does not:</p>
+
+<pre><code>(defn something-slow [x]
+  (Thread/sleep 1000))
+
+(map something-slow (range 5))
+;; Takes 5 seconds
+(pmap something-slow (range 5))
+;; Takes 1 second
+</code></pre>
+
+<p>I do note that your GitHub code uses <code>pmap</code> in the example which runs in <code>main-</code>; if you change back to <code>map</code> does the parallelism persist?</p>
+","611752","","611752","","2013-03-24 21:27:18","2013-03-24 21:27:18","","","","3","","",""
+"15604069","2","","15603108","2013-03-24 21:12:15","","1","","<p><a href=""https://dl.dropbox.com/u/2752840/cuctest.zip"" rel=""nofollow"">Here is the sample project</a> that is using Cucumber and Watir to open a search page, send a query and verify the results.</p>
+
+<p><code>Gemfile</code> specifies the required gems, make sure they are installed or can be installed in your environment. If you are on Windows you need to <a href=""https://github.com/oneclick/rubyinstaller/wiki/Development-Kit"" rel=""nofollow"">install DevKit</a>.</p>
+","104891","","","","","2013-03-24 21:12:15","","","","3","","",""
+"15604070","1","15604325","","2013-03-24 21:12:28","","1","427","<p>I have an app which is counting down the time. I would like to get a notification in the notification bar while the time is up.</p>
+
+<p>I've already done this:</p>
+
+<pre><code>Intent intent = new Intent();
+PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent, 0);
+Notification noti = new Notification.Builder(this).setTicker(""Ticker Title"").setContentTitle(""Content Title"").setContentText(""Notification content."").setSmallIcon(R.drawable.iconnotif).setContentIntent(pIntent).getNotification();
+noti.flags=Notification.FLAG_AUTO_CANCEL;
+NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+notificationManager.notify(uniqueID, noti);
+</code></pre>
+
+<p>The problem occurs when I try to enter the app by clicking the notification.
+When the notification is shown, I click it, but it doesn't do anything.</p>
+
+<p>How to solve this problem?
+Thanks for help! :)</p>
+","1333938","","563904","","2013-03-24 21:29:53","2013-03-24 21:37:40","I can't enter to the app through the notification bar","<android><android-notifications><android-notification-bar>","1","1","","",""
+"15604071","2","","14841504","2013-03-24 21:12:31","","0","","<p>It certainly is not a question of the path. The only question goes to what version of the JavaVM you are using. If it's the 32bit version of Java, it will attempt to load any DLL as 32bit DLL, if it's the 64bit version of Java, it will attempt to load any DLL as 64bit DLL.</p>
+
+<p>So, either
+- You only have the 32bit Java installed on your system, and try to load a 64bit DLL; or
+- You have both 32bit and 64bit Java installed, then you need to make sure that you use the 64bit version for your test.</p>
+
+<p>The fact that you claim you have successfully used the DLL from a different folder suggests the latter, so make sure the java executable you use is the 64bit version.</p>
+","5237","","","","","2013-03-24 21:12:31","","","","0","","",""
+"15604072","2","","15604001","2013-03-24 21:12:31","","1","","<p>If I understand your problem, try this in your .htaccess file:</p>
+
+<pre><code>RewriteCond %{HTTP_HOST} ^player.mydomain.com$
+RewriteRule ^(.*)$ http://player.vimeo.com/$1 [R=permanent]
+</code></pre>
+
+<p>That will simply throw the filename and query-string requested to player.vimeo.com.</p>
+","1515834","","","","","2013-03-24 21:12:31","","","","0","","",""
+"15604074","2","","15603098","2013-03-24 21:12:36","","4","","<p>The issue here is that you are writing everything to Excel as a string, and Excel will store it as such.  On editing and pressing Enter, Excel will re-interpret the cell contents and may then store it differently.</p>
+
+<p>When you call <code>ToString()</code> on a <code>DateTime</code>, the default formatting is in the form DD/MM/YY HH:mm:ss, which is exactly what you are seeing in the resultant file.</p>
+
+<p>Dates in Excel are stored as numbers representing the number of days that have elapsed since 1900.  To get this number, you can call the <code>ToOADate()</code> method.</p>
+
+<p>See <a href=""http://msdn.microsoft.com/en-gb/library/system.datetime.tooadate.aspx"" rel=""nofollow"">http://msdn.microsoft.com/en-gb/library/system.datetime.tooadate.aspx</a></p>
+
+<p>With the data set as a <code>double</code>and an appropriate format string, you should get the result you're hoping for!</p>
+","1320845","","","","","2013-03-24 21:12:36","","","","3","","",""
+"15604075","2","","15596749","2013-03-24 21:12:40","","5","","<p>The new MVC classes really aren't suited for out-of-the-box use with the CMS.  They're usable, if you're willing to maintain the extra code to do it.  </p>
+
+<p><strong>The 3.1 installer uses the new MVC</strong>, otherwise, the best examples I know using the newer MVC are the tracker application (which is the only large scale web application I've seen publicly use it) and the Platform Pull Tester.  </p>
+
+<p>David Hurley is running a series in the Joomla! Magazine (<a href=""http://magazine.joomla.org/issues/issue-mar-2013/item/1137-joomla-30-extension-development-series-writing-the-core"" rel=""nofollow"">latest article</a>) on using the new MVC, but it isn't very far along just yet.</p>
+","498353","","766177","","2013-03-26 20:11:15","2013-03-26 20:11:15","","","","0","","",""
+"15604076","1","","","2013-03-24 21:12:44","","3","838","<p>I have a custom DialogPreference Dialog that has its layout set out in a relativelayout that contains the following:</p>
+
+<ul>
+<li>Checkbox </li>
+<li>Textview </li>
+<li>Text Field</li>
+</ul>
+
+<p>This is fine in Android 4.0+, because the theme we are using is Theme.Light so the background color of the dialog is white and the default text is black for the Checkbox label and textview. However, in 2.3.3, the background color is dark grey so it becomes hard to see the text... the theme is still Theme.Light however.</p>
+
+<p>I thought that making a custom dialog would be necessary for this because the checkbox enable/disables the text field. At the moment, I'm making the background color of the relativelayout for this Dialog white... but I don't really like this solution as there maybe cases where some other phones on 2.3.3 may not have white as the default dialog background...</p>
+
+<p>Is there a cleaner way to fix this problem?</p>
+
+<p>I notice this person has the same problem: <a href=""https://stackoverflow.com/questions/15065049/custom-support-dialog-fragment-text-is-the-wrong-color"">Custom Support Dialog Fragment text is the wrong color</a></p>
+
+<p>Another with the problem :<a href=""https://stackoverflow.com/questions/7771230/android-issue-with-showing-dialog-from-theme-light-activity"">Android: Issue with showing dialog from Theme.Light activity</a></p>
+
+<p>EDIT: Attached screenshot. This is what it looks like on LG Optimus 2X running 2.3.3. On my co-worker's samsung galaxy which runs 2.3.3 also, the background is even darker so you can hardly see the text.</p>
+
+<p><img src=""https://i.stack.imgur.com/PnP55.png"" alt=""enter image description here""></p>
+","830854","","-1","","2017-05-23 11:49:55","2014-07-01 09:05:18","Android Custom Dialog Textview and Background Color","<android><text><colors><dialog>","1","2","","",""
+"15604079","2","","15587606","2013-03-24 21:13:19","","5","","<h1>To get a panel to autoresize based on its content</h1>
+
+<p>You should set its <code>flex</code> to 0, and make sure other panels have <code>flex</code> that is different from 0. So in the following code, the footer has <code>flex: 0</code> and the center region has <code>flex: 1</code>; the footer will therefore resize based on its contents. Here's a <a href=""http://jsfiddle.net/pmuhH/2/"" rel=""nofollow"">working JsFiddle</a>:</p>
+
+<pre><code>Ext.create('Ext.panel.Panel', {
+    width: 500,
+    height: 300,
+    title: 'Border Layout',
+    layout: 'border',
+    items: [{
+        title: 'Footer',
+        region:'south',
+        xtype: 'panel',
+        margins: '5 0 0 5',
+        flex: 0, // Notice this.
+        id: 'footer',
+        layout: {
+            type: 'vbox',
+            align : 'stretch',
+            pack  : 'start',
+        },
+        items:[{
+            title: '1',
+            height: 50
+        },{
+            title: '2',
+            height: 50                                   
+        }]
+    },{
+        title: 'Center Region',
+        flex: 1, // Notice this.
+        region: 'center',
+        xtype: 'panel',
+        layout: 'fit',
+        margins: '5 5 0 0'
+    }],
+    renderTo: Ext.getBody()
+});
+
+Ext.getCmp('footer').add({
+    title: '3',
+    height: 50                        
+});
+</code></pre>
+
+<h1>To get a panel of fixed size to scroll based on its content</h1>
+
+<p>Simply add <code>autoScroll: true</code> on the containers (the region panels).</p>
+
+<p>Here's some working code, which you can see in action on <a href=""http://jsfiddle.net/Izhaki/pmuhH/"" rel=""nofollow"">this JsFiddle</a>:</p>
+
+<pre><code>Ext.create('Ext.panel.Panel', {
+    width: 500,
+    height: 300,
+    title: 'Border Layout',
+    layout: 'border',
+    items: [{
+        title: 'West Region',
+        region:'west',
+        xtype: 'panel',
+        margins: '5 0 0 5',
+        width: 200,
+        id: 'west-region-container',
+
+        // Notice the next line
+        autoScroll: true,
+        layout: {
+            type: 'vbox',
+            align : 'stretch',
+            pack  : 'start',
+        },
+        items:[{
+            title: '1',
+            height: 100
+        },{
+            title: '2',
+            height: 100            
+        },{
+            title: '3',
+            height: 100                        
+        }]
+    },{
+        title: 'Center Region',
+        region: 'center', 
+        xtype: 'panel',
+        layout: 'fit',
+        margins: '5 5 0 0'
+    }],
+    renderTo: Ext.getBody()
+});
+</code></pre>
+","1179377","","1179377","","2013-03-25 12:54:21","2013-03-25 12:54:21","","","","4","","",""
+"15604080","1","15610115","","2013-03-24 21:13:26","","-1","540","<p>I have this query that would return a search from base with the operation Like '%srch'</p>
+
+<pre><code> srch=search.getText().toString();
+...
+db.rawQuery(""SELECT  * FROM MyTable WHERE Name LIKE 'srch%' or Name LIKE '%srch' "",null);
+</code></pre>
+
+<p>but it doesn't work.</p>
+
+<p>Can you explain why it doesn't work, and how I can fix it ? </p>
+
+<p>thanks a lot</p>
+","2121002","","4084574","","2016-07-15 14:50:48","2016-07-15 14:50:48","Why like operator doesn't work - Sqlite","<sql><database><sqlite><sqlite3>","3","4","","",""
