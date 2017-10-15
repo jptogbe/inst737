@@ -11,10 +11,14 @@ https://en.wikipedia.org/wiki/Bag-of-words_model
 'SQL', 'statistics'), then train a model to predict further questions to see if they can be categorized into a certain topic.
 --->maybe related to tags too
 
-
+5. Sentence Quality ratios --see if good-marked questions tend to have a better sentence quality or sentence does no matter?
+-maybe create a score algorithm?
+http://pacific.pitt.edu/dhds/youTube/page3.html
 
 
 Questions:
 1. if a post can have only one comment? -- data in comment shows that one postID only has one comment but I see a post can have 
 several comments on StackOverflow.
 2. Should we do something about scores in comment? It seems most people ignored this part so most data in that column shows 0.
+3. What's TagBased column in Badges table?
+4. Can we share papers that might be useful to our project?
