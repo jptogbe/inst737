@@ -38,6 +38,8 @@ Below are the list of papers that you might find helpful for brainstorming.
 ## Reference papers
 
 * ICWSM2017
+* Min(e)d Your Tags: Analysis of Question Response Time in StackOverflow
+https://pdfs.semanticscholar.org/312d/a6ff7dc3aa104493e3c8e7be8313020f16bd.pdf
 
 ## Examplary NLP analyses
 
