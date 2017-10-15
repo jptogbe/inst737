@@ -1,4 +1,20 @@
 1. See if the score of a post is in consistency with the comment by analyzing content of comment.
-2. how about predicting question topic (e.g. tech-related question VS non-tech related question) by linguistic characteristics (e.g. how long a question is, how long an answer is, or TF/IDF score of a question)?
-3. train a model to find labels for tech-related questions VS non-tech related questions so that it could be used to predict if a question is tech or non-tech. --bag of words model 
+
+2. how about predicting question topic (e.g. tech-related question VS non-tech related question) by linguistic characteristics 
+(e.g. how long a question is, how long an answer is, or TF/IDF score of a question)?
+
+3. train a model to find labels for tech-related questions VS non-tech related questions so that it could be used to predict 
+if a question is tech or non-tech. --bag of words model 
 https://en.wikipedia.org/wiki/Bag-of-words_model
+
+4. Analyze content of posts, get the most frequently used words for different question topics (for example, 'machine learning',
+'SQL', 'statistics'), then train a model to predict further questions to see if they can be categorized into a certain topic.
+--->maybe related to tags too
+
+
+
+
+Questions:
+1. if a post can have only one comment? -- data in comment shows that one postID only has one comment but I see a post can have 
+several comments on StackOverflow.
+2. Should we do something about scores in comment? It seems most people ignored this part so most data in that column shows 0.
