@@ -2,6 +2,12 @@
 
 This is for class project of INST737.
 
+# Data source
+
+source: data.stackexchange.com
+ 
+Brief explanation of database is here: https://meta.stackexchange.com/questions/2677/database-schema-documentation-for-the-public-data-dump-and-sede
+
 
 # Example data files to work with
 
