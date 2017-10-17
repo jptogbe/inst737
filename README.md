@@ -1,6 +1,5 @@
-# inst737: Introduction to Data Science
 
-This is for class project of INST737.
+ This is for class project in INST737.
 
 # Data source
 
