@@ -47,7 +47,7 @@ Below are the list of papers that you might find helpful for brainstorming.
 https://pdfs.semanticscholar.org/312d/a6ff7dc3aa104493e3c8e7be8313020f16bd.pdf
 
 
-For text summarization&classification
+### For text summarization&classification
 
 -Extracting Sentence Segments for Text Summarization: A Machine Learning Approach
 https://dl.acm.org/citation.cfm?id=345566
