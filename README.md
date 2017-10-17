@@ -59,8 +59,10 @@ https://dl.acm.org/citation.cfm?id=1105708
 https://dl.acm.org/citation.cfm?id=1118704
 
 
-## Examplary NLP analyses
+## Other NLP analyses (not in papers, but in articles or other sources)
 
 1. 2015 presidential debate [link](https://alexperrier.github.io/jekyll/update/2015/11/12/nlp-analysis-presidential-debates.html)
 
+## ML methods / Techniques
 
+* Which algorithm to solve my problem? [link](https://blogs.sas.com/content/subconsciousmusings/2017/04/12/machine-learning-algorithm-use/)
