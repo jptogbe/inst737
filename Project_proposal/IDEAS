@@ -16,6 +16,8 @@ https://en.wikipedia.org/wiki/Bag-of-words_model
 http://pacific.pitt.edu/dhds/youTube/page3.html
 
 
+6. We can also predict deleted questions
+
 Questions:
 1. if a post can have only one comment? -- data in comment shows that one postID only has one comment but I see a post can have 
 several comments on StackOverflow.
