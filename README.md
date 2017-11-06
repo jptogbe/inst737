@@ -94,3 +94,7 @@ https://dl.acm.org/citation.cfm?id=1118704
 ## Stack OVerflow papers
 
 * [Toward Understanding the Causes of Unanswered Questions in Software Information Sites: A Case Study of Stack Overflow](http://users.ece.utexas.edu/~perry/work/papers/1308-RS-fsenier.pdf)
+
+* [Fit or Unfit : Analysis and Prediction of ‘Closed Questions’on Stack Overflow](https://arxiv.org/pdf/1307.7291.pdf)
+
+* [Answering questions about unanswered questions of Stack Overflow](need_url)
