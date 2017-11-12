@@ -1,0 +1,60 @@
+---
+title: "Deliverables"
+author: "Joohee"
+date: '2017 11 12 '
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Read in the data & Pre-processing
+
+```{r}
+data1112 <- read.csv("./ClassProject/data/data1112.csv")
+
+data1112$likelihood <- 0
+data1112$likelihood[data1112$AcceptedAnswerId > 0] <- 1
+
+```
+
+## Divide test set & train set
+
+```{r}
+index <- 1:nrow(data1112)
+testindex <- sample(index, trunc(length(index)/5))
+testset <- data1112[testindex,]
+trainset <- data1112[-testindex,]
+
+```
+
+
+## Run the model without text-mining features
+
+```{r}
+library(e1071)
+library(cwhmisc)
+
+record_performance <- function(df, name, model, test) {
+  svm.pred <- predict(model, test)
+  svm.table <- table(pred = svm.pred, true=test$likelihood)
+  df <- rbind(df, data.frame(model=c(name), score=c(classAgreement(svm.table)$diag)))
+  return(df)
+}
+```
+
+## SVM model performance test
+
+```{r}
+mfc_baseline <- sum(testset$likelihood == 0) / nrow(testset)
+results <- data.frame(model=c("MFC"), score=c(mfc_baseline)) ## Baseline performance
+
+results <- record_performance(results, "all_var", svm(likelihood ~ postViewcount, data=trainset), testset) ## models before feature engineering
+
+```
+
+```{r}
+results
+```
+
